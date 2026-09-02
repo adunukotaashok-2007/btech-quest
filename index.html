@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>BTECH QUEST</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="game">
+
+        <!-- MAIN MENU -->
+
+        <section id="menu" class="screen">
+
+            <div class="menu-box">
+
+                <div class="logo">
+                    BTECH
+                    <span>QUEST</span>
+                </div>
+
+                <p class="tagline">
+                    Learn • Play • Code • Compete
+                </p>
+
+                <button id="startButton">
+                    START GAME
+                </button>
+
+                <button id="howButton">
+                    HOW TO PLAY
+                </button>
+
+                <button id="aboutButton">
+                    ABOUT
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- HOW TO PLAY -->
+
+        <section id="howScreen" class="screen hidden">
+
+            <div class="panel">
+
+                <h1>HOW TO PLAY</h1>
+
+                <p>
+                    Welcome to BTECH QUEST!
+                </p>
+
+                <p>
+                    Explore the campus, learn programming,
+                    solve challenges and earn XP.
+                </p>
+
+                <div class="instructions">
+
+                    <div>
+                        <strong>🎮 MOVE</strong>
+                        <p>Use WASD or Arrow Keys.</p>
+                    </div>
+
+                    <div>
+                        <strong>💻 CODE</strong>
+                        <p>Solve programming challenges.</p>
+                    </div>
+
+                    <div>
+                        <strong>🧠 LEARN</strong>
+                        <p>Study B.Tech subjects.</p>
+                    </div>
+
+                    <div>
+                        <strong>🏆 COMPETE</strong>
+                        <p>Compete with other students.</p>
+                    </div>
+
+                </div>
+
+                <button id="backButton">
+                    BACK
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ABOUT -->
+
+        <section id="aboutScreen" class="screen hidden">
+
+            <div class="panel">
+
+                <h1>BTECH QUEST</h1>
+
+                <p>
+                    A learning game designed for B.Tech students.
+                </p>
+
+                <p>
+                    Programming, DSA, DBMS, Operating Systems,
+                    Computer Networks, AI, Cybersecurity,
+                    Aptitude and placement preparation.
+                </p>
+
+                <p class="version">
+                    Version 0.1
+                </p>
+
+                <button id="aboutBackButton">
+                    BACK
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- GAME -->
+
+        <section id="gameScreen" class="hidden">
+
+            <div id="hud">
+
+                <div class="hud-item">
+                    LEVEL
+                    <strong id="level">1</strong>
+                </div>
+
+                <div class="hud-item">
+                    XP
+                    <strong id="xp">0</strong>
+                </div>
+
+                <div class="hud-item">
+                    COINS
+                    <strong id="coins">100</strong>
+                </div>
+
+            </div>
+
+
+            <div id="campus">
+
+                <div class="campus-title">
+                    BTECH UNIVERSITY
+                </div>
+
+
+                <!-- BUILDINGS -->
+
+                <div
+                    class="building programming"
+                    data-subject="programming"
+                >
+                    <div class="building-icon">💻</div>
+                    <h2>CODING LAB</h2>
+                    <p>C / C++ / Java / Python</p>
+                </div>
+
+
+                <div
+                    class="building dsa"
+                    data-subject="dsa"
+                >
+                    <div class="building-icon">🧠</div>
+                    <h2>DSA DUNGEON</h2>
+                    <p>Algorithms & Data Structures</p>
+                </div>
+
+
+                <div
+                    class="building dbms"
+                    data-subject="dbms"
+                >
+                    <div class="building-icon">🗄️</div>
+                    <h2>DB LAB</h2>
+                    <p>SQL & DBMS</p>
+                </div>
+
+
+                <div
+                    class="building networks"
+                    data-subject="networks"
+                >
+                    <div class="building-icon">🌐</div>
+                    <h2>NETWORK LAB</h2>
+                    <p>Networking</p>
+                </div>
+
+
+                <div
+                    class="building os"
+                    data-subject="os"
+                >
+                    <div class="building-icon">🖥️</div>
+                    <h2>OS LAB</h2>
+                    <p>Operating Systems</p>
+                </div>
+
+
+                <div
+                    class="building ai"
+                    data-subject="ai"
+                >
+                    <div class="building-icon">🤖</div>
+                    <h2>AI LAB</h2>
+                    <p>AI / ML</p>
+                </div>
+
+
+                <!-- PLAYER -->
+
+                <div id="player">
+
+                    <div class="player-body">
+                        👨‍💻
+                    </div>
+
+                    <div class="player-name">
+                        PLAYER
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOBILE CONTROLS -->
+
+            <div id="mobileControls">
+
+                <button id="up">▲</button>
+
+                <div>
+                    <button id="left">◀</button>
+                    <button id="down">▼</button>
+                    <button id="right">▶</button>
+                </div>
+
+            </div>
+
+
+            <!-- SUBJECT POPUP -->
+
+            <div id="subjectPopup" class="popup hidden">
+
+                <div class="popup-box">
+
+                    <button
+                        id="closePopup"
+                        class="close"
+                    >
+                        ×
+                    </button>
+
+                    <h1 id="popupTitle">
+                        Coding Lab
+                    </h1>
+
+                    <p id="popupDescription">
+                        Welcome to the coding lab.
+                    </p>
+
+                    <button id="challengeButton">
+                        START CHALLENGE
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTION POPUP -->
+
+            <div id="questionPopup" class="popup hidden">
+
+                <div class="question-box">
+
+                    <h2 id="questionTitle">
+                        Challenge
+                    </h2>
+
+                    <p id="questionText">
+                        Question
+                    </p>
+
+                    <div id="answers"></div>
+
+                    <div id="result"></div>
+
+                    <button
+                        id="nextQuestion"
+                        class="hidden"
+                    >
+                        NEXT
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <script src="game.js"></script>
+
+</body>
+</html>
