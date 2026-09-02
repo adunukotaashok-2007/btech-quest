@@ -1,0 +1,649 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: #080812;
+    color: white;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+#game {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.screen {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #22205c,
+            #09091a 60%,
+            #030308
+        );
+}
+
+.menu-box {
+    width: min(90%, 500px);
+    padding: 40px 25px;
+
+    text-align: center;
+
+    background: rgba(20, 20, 40, 0.92);
+
+    border: 2px solid #5555ff;
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 0 40px rgba(80, 80, 255, 0.35);
+}
+
+.logo {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: 4px;
+}
+
+.logo span {
+    display: block;
+    color: #7777ff;
+}
+
+.tagline {
+    margin-top: 10px;
+    margin-bottom: 35px;
+    color: #bbbbcc;
+}
+
+.menu-box button {
+    display: block;
+
+    width: 100%;
+
+    margin: 14px 0;
+
+    padding: 16px;
+
+    border-radius: 12px;
+
+    background: #5555ff;
+
+    color: white;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+.menu-box button:hover {
+    transform: translateY(-2px);
+    background: #7070ff;
+}
+
+
+/* =========================
+   PANELS
+========================= */
+
+.panel {
+    width: min(90%, 600px);
+
+    padding: 35px;
+
+    background: rgba(20, 20, 40, 0.95);
+
+    border: 2px solid #5555ff;
+
+    border-radius: 20px;
+
+    text-align: center;
+}
+
+.panel h1 {
+    margin-bottom: 20px;
+}
+
+.panel p {
+    margin: 12px 0;
+    line-height: 1.6;
+    color: #ccccdd;
+}
+
+.instructions {
+    margin: 25px 0;
+}
+
+.instructions div {
+    padding: 12px;
+
+    margin: 8px 0;
+
+    background: rgba(255,255,255,0.05);
+
+    border-radius: 10px;
+}
+
+.panel button {
+    margin-top: 20px;
+
+    padding: 13px 35px;
+
+    border-radius: 10px;
+
+    background: #5555ff;
+
+    color: white;
+
+    font-weight: bold;
+}
+
+.version {
+    font-size: 13px;
+    color: #777788 !important;
+}
+
+
+/* =========================
+   GAME SCREEN
+========================= */
+
+#gameScreen {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    background: #101522;
+}
+
+
+/* =========================
+   HUD
+========================= */
+
+#hud {
+    position: absolute;
+
+    top: 15px;
+    left: 15px;
+
+    z-index: 100;
+
+    display: flex;
+    gap: 10px;
+}
+
+.hud-item {
+    min-width: 90px;
+
+    padding: 8px 12px;
+
+    background: rgba(0,0,0,0.75);
+
+    border: 1px solid #5555ff;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    font-size: 11px;
+    color: #bbbbcc;
+}
+
+.hud-item strong {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 18px;
+
+    color: white;
+}
+
+
+/* =========================
+   CAMPUS
+========================= */
+
+#campus {
+    position: absolute;
+
+    width: 1400px;
+    height: 900px;
+
+    left: 0;
+    top: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        ),
+        #172333;
+
+    background-size: 50px 50px;
+}
+
+.campus-title {
+    position: absolute;
+
+    top: 35px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: 30px;
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 15px #5555ff;
+}
+
+
+/* =========================
+   BUILDINGS
+========================= */
+
+.building {
+    position: absolute;
+
+    width: 250px;
+    height: 170px;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    background: rgba(25, 25, 50, 0.95);
+
+    border: 2px solid #4444aa;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.4);
+
+    transition: 0.2s;
+
+    cursor: pointer;
+}
+
+.building:hover {
+    transform: scale(1.04);
+
+    border-color: #8888ff;
+
+    box-shadow:
+        0 0 30px rgba(100,100,255,0.35);
+}
+
+.building-icon {
+    font-size: 42px;
+}
+
+.building h2 {
+    margin-top: 8px;
+
+    font-size: 18px;
+}
+
+.building p {
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    color: #aaaacc;
+}
+
+
+/* BUILDING POSITIONS */
+
+.programming {
+    left: 120px;
+    top: 160px;
+}
+
+.dsa {
+    left: 500px;
+    top: 160px;
+}
+
+.dbms {
+    left: 880px;
+    top: 160px;
+}
+
+.networks {
+    left: 120px;
+    top: 440px;
+}
+
+.os {
+    left: 500px;
+    top: 440px;
+}
+
+.ai {
+    left: 880px;
+    top: 440px;
+}
+
+
+/* =========================
+   PLAYER
+========================= */
+
+#player {
+    position: absolute;
+
+    left: 650px;
+    top: 350px;
+
+    width: 80px;
+
+    text-align: center;
+
+    z-index: 50;
+
+    user-select: none;
+}
+
+.player-body {
+    width: 60px;
+    height: 60px;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
+
+    background: rgba(0,0,0,0.25);
+
+    border-radius: 50%;
+}
+
+.player-name {
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 1px 4px black;
+}
+
+
+/* =========================
+   MOBILE CONTROLS
+========================= */
+
+#mobileControls {
+    position: fixed;
+
+    bottom: 20px;
+    left: 20px;
+
+    z-index: 200;
+
+    display: none;
+}
+
+#mobileControls button {
+    width: 55px;
+    height: 55px;
+
+    margin: 3px;
+
+    border-radius: 12px;
+
+    background: rgba(30,30,60,0.9);
+
+    border: 1px solid #6666ff;
+
+    color: white;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   POPUPS
+========================= */
+
+.popup {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 500;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0,0,0,0.75);
+
+    padding: 20px;
+}
+
+.popup-box,
+.question-box {
+    width: min(95%, 600px);
+
+    padding: 30px;
+
+    background: #15152b;
+
+    border: 2px solid #6666ff;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 50px rgba(70,70,255,0.3);
+
+    text-align: center;
+}
+
+.close {
+    float: right;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    background: #33334d;
+
+    color: white;
+
+    font-size: 22px;
+}
+
+.popup-box h1 {
+    margin: 15px 0;
+}
+
+.popup-box p {
+    margin: 20px 0;
+
+    color: #bbbbcc;
+
+    line-height: 1.6;
+}
+
+#challengeButton,
+#nextQuestion {
+    padding: 14px 25px;
+
+    border-radius: 10px;
+
+    background: #5555ff;
+
+    color: white;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   QUESTIONS
+========================= */
+
+#questionText {
+    margin: 25px 0;
+
+    font-size: 18px;
+
+    line-height: 1.5;
+}
+
+#answers button {
+    display: block;
+
+    width: 100%;
+
+    margin: 10px 0;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: #28284a;
+
+    border: 1px solid #555577;
+
+    color: white;
+
+    text-align: left;
+}
+
+#answers button:hover {
+    background: #3c3c70;
+}
+
+#result {
+    min-height: 30px;
+
+    margin: 15px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .logo {
+        font-size: 38px;
+    }
+
+    .campus-title {
+        font-size: 20px;
+    }
+
+    #mobileControls {
+        display: block;
+    }
+
+    .building {
+        width: 200px;
+        height: 145px;
+    }
+
+    .building-icon {
+        font-size: 34px;
+    }
+
+    .building h2 {
+        font-size: 15px;
+    }
+
+    .building p {
+        font-size: 10px;
+    }
+
+    .programming {
+        left: 60px;
+    }
+
+    .dsa {
+        left: 350px;
+    }
+
+    .dbms {
+        left: 640px;
+    }
+
+    .networks {
+        left: 60px;
+    }
+
+    .os {
+        left: 350px;
+    }
+
+    .ai {
+        left: 640px;
+    }
+
+    #hud {
+        transform: scale(0.85);
+
+        transform-origin: top left;
+    }
+}
