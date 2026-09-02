@@ -1,28 +1,50 @@
 /* =====================================================
    BTECH QUEST
-   STEP 1 - BASIC GAME
+   STEP 2
+   CAMPUS EXPLORATION
 ===================================================== */
 
 
 /* =====================================================
-   GAME DATA
+   PLAYER
 ===================================================== */
 
 const player = {
-    x: 650,
-    y: 350,
 
-    speed: 5
+    x: 850,
+
+    y: 650,
+
+    width: 60,
+
+    height: 60,
+
+    speed: 4
+
 };
 
 
+/* =====================================================
+   GAME STATE
+===================================================== */
+
 let level = 1;
+
 let xp = 0;
+
 let coins = 100;
+
+let gameStarted = false;
+
+let currentSubject = null;
+
+let nearbyBuilding = null;
+
+let nearbyNPC = null;
 
 
 /* =====================================================
-   ELEMENTS
+   DOM
 ===================================================== */
 
 const menu =
@@ -43,6 +65,9 @@ const campus =
 const playerElement =
     document.getElementById("player");
 
+const camera =
+    document.getElementById("camera");
+
 const levelElement =
     document.getElementById("level");
 
@@ -52,71 +77,112 @@ const xpElement =
 const coinsElement =
     document.getElementById("coins");
 
+const interaction =
+    document.getElementById("interaction");
+
+const interactButton =
+    document.getElementById("interactButton");
+
 
 /* =====================================================
-   MENU BUTTONS
+   MENU
 ===================================================== */
 
 document
     .getElementById("startButton")
-    .addEventListener("click", startGame);
+    .addEventListener(
+        "click",
+        startGame
+    );
 
 
 document
     .getElementById("howButton")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        menu.classList.add("hidden");
+            menu.classList.add("hidden");
 
-        howScreen.classList.remove("hidden");
+            howScreen.classList.remove(
+                "hidden"
+            );
 
-    });
+        }
+    );
 
 
 document
     .getElementById("aboutButton")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        menu.classList.add("hidden");
+            menu.classList.add("hidden");
 
-        aboutScreen.classList.remove("hidden");
+            aboutScreen.classList.remove(
+                "hidden"
+            );
 
-    });
+        }
+    );
 
 
 document
     .getElementById("backButton")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        howScreen.classList.add("hidden");
+            howScreen.classList.add(
+                "hidden"
+            );
 
-        menu.classList.remove("hidden");
+            menu.classList.remove(
+                "hidden"
+            );
 
-    });
+        }
+    );
 
 
 document
     .getElementById("aboutBackButton")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        aboutScreen.classList.add("hidden");
+            aboutScreen.classList.add(
+                "hidden"
+            );
 
-        menu.classList.remove("hidden");
+            menu.classList.remove(
+                "hidden"
+            );
 
-    });
+        }
+    );
 
 
 /* =====================================================
-   START GAME
+   START
 ===================================================== */
 
 function startGame() {
 
     menu.classList.add("hidden");
 
-    gameScreen.classList.remove("hidden");
+    gameScreen.classList.remove(
+        "hidden"
+    );
+
+    gameStarted = true;
+
+    updateHUD();
 
     updatePlayer();
+
+    centerCamera();
 
 }
 
@@ -128,18 +194,53 @@ function startGame() {
 const keys = {};
 
 
-window.addEventListener("keydown", (event) => {
+window.addEventListener(
+    "keydown",
+    event => {
 
-    keys[event.key.toLowerCase()] = true;
+        const key =
+            event.key.toLowerCase();
 
-});
+        keys[key] = true;
 
 
-window.addEventListener("keyup", (event) => {
+        if (
+            [
+                "arrowup",
+                "arrowdown",
+                "arrowleft",
+                "arrowright",
+                " "
+            ].includes(key)
+        ) {
 
-    keys[event.key.toLowerCase()] = false;
+            event.preventDefault();
 
-});
+        }
+
+
+        if (
+            key === "e"
+        ) {
+
+            interact();
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "keyup",
+    event => {
+
+        keys[
+            event.key.toLowerCase()
+        ] = false;
+
+    }
+);
 
 
 /* =====================================================
@@ -148,64 +249,88 @@ window.addEventListener("keyup", (event) => {
 
 function movePlayer() {
 
-    let moved = false;
+    if (!gameStarted)
+        return;
+
+
+    let dx = 0;
+
+    let dy = 0;
 
 
     if (
-        keys["arrowup"] ||
-        keys["w"]
+        keys["w"] ||
+        keys["arrowup"]
     ) {
 
-        player.y -= player.speed;
-
-        moved = true;
+        dy -= 1;
 
     }
 
 
     if (
-        keys["arrowdown"] ||
-        keys["s"]
+        keys["s"] ||
+        keys["arrowdown"]
     ) {
 
-        player.y += player.speed;
-
-        moved = true;
+        dy += 1;
 
     }
 
 
     if (
-        keys["arrowleft"] ||
-        keys["a"]
+        keys["a"] ||
+        keys["arrowleft"]
     ) {
 
-        player.x -= player.speed;
-
-        moved = true;
+        dx -= 1;
 
     }
 
 
     if (
-        keys["arrowright"] ||
-        keys["d"]
+        keys["d"] ||
+        keys["arrowright"]
     ) {
 
-        player.x += player.speed;
-
-        moved = true;
+        dx += 1;
 
     }
 
 
-    /* WORLD BOUNDARIES */
+    if (
+        dx !== 0 ||
+        dy !== 0
+    ) {
+
+        const length =
+            Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+
+        dx /= length;
+
+        dy /= length;
+
+
+        player.x +=
+            dx * player.speed;
+
+        player.y +=
+            dy * player.speed;
+
+    }
+
+
+    /* WORLD LIMITS */
 
     player.x =
         Math.max(
             20,
             Math.min(
-                1320,
+                1720,
                 player.x
             )
         );
@@ -215,25 +340,23 @@ function movePlayer() {
         Math.max(
             100,
             Math.min(
-                820,
+                1120,
                 player.y
             )
         );
 
 
-    if (moved) {
+    updatePlayer();
 
-        updatePlayer();
+    centerCamera();
 
-        checkBuildingCollision();
-
-    }
+    checkNearby();
 
 }
 
 
 /* =====================================================
-   UPDATE PLAYER POSITION
+   UPDATE PLAYER
 ===================================================== */
 
 function updatePlayer() {
@@ -248,117 +371,143 @@ function updatePlayer() {
 
 
 /* =====================================================
-   GAME LOOP
+   CAMERA
 ===================================================== */
 
-function gameLoop() {
+function centerCamera() {
 
-    if (
-        !gameScreen.classList.contains("hidden")
-    ) {
+    const screenWidth =
+        window.innerWidth;
 
-        movePlayer();
-
-    }
+    const screenHeight =
+        window.innerHeight;
 
 
-    requestAnimationFrame(gameLoop);
+    let cameraX =
+        player.x -
+        screenWidth / 2;
+
+    let cameraY =
+        player.y -
+        screenHeight / 2;
+
+
+    const maxX =
+        1800 -
+        screenWidth;
+
+    const maxY =
+        1200 -
+        screenHeight;
+
+
+    cameraX =
+        Math.max(
+            0,
+            Math.min(
+                maxX,
+                cameraX
+            )
+        );
+
+
+    cameraY =
+        Math.max(
+            0,
+            Math.min(
+                maxY,
+                cameraY
+            )
+        );
+
+
+    campus.style.transform =
+        `translate(${-cameraX}px, ${-cameraY}px)`;
 
 }
 
 
-gameLoop();
-
-
 /* =====================================================
-   BUILDING SYSTEM
+   BUILDINGS
 ===================================================== */
 
 const buildings =
-    document.querySelectorAll(".building");
+    document.querySelectorAll(
+        ".building[data-subject]"
+    );
 
 
-let currentSubject = null;
-
-
-buildings.forEach((building) => {
-
-    building.addEventListener("click", () => {
-
-        currentSubject =
-            building.dataset.subject;
-
-        openSubject(
-            currentSubject
-        );
-
-    });
-
-});
-
-
-/* =====================================================
-   SUBJECT DATA
-===================================================== */
-
-const subjects = {
+const buildingData = {
 
     programming: {
 
-        title: "💻 Coding Lab",
+        title: "💻 CODING LAB",
 
         description:
-            "Learn C, C++, Java, Python and programming fundamentals."
+            "Master C, C++, Java, Python and programming fundamentals."
 
     },
-
 
     dsa: {
 
-        title: "🧠 DSA Dungeon",
+        title: "🧠 DSA DUNGEON",
 
         description:
-            "Master arrays, strings, linked lists, stacks, queues, trees, graphs and algorithms."
+            "Solve algorithms and data structure challenges."
 
     },
-
 
     dbms: {
 
-        title: "🗄️ DB Lab",
+        title: "🗄️ DB LAB",
 
         description:
-            "Learn SQL, database design, keys, normalization and DBMS concepts."
+            "Learn SQL, database design, keys and normalization."
 
     },
-
 
     networks: {
 
-        title: "🌐 Network Lab",
+        title: "🌐 NETWORK LAB",
 
         description:
-            "Learn OSI, TCP/IP, IP addressing, routing and networking concepts."
+            "Learn OSI, TCP/IP, IP addressing, routing and protocols."
 
     },
-
 
     os: {
 
-        title: "🖥️ Operating Systems Lab",
+        title: "🖥️ OS LAB",
 
         description:
-            "Learn processes, threads, scheduling, memory management and file systems."
+            "Learn processes, threads, scheduling and memory."
 
     },
 
-
     ai: {
 
-        title: "🤖 AI Lab",
+        title: "🤖 AI LAB",
 
         description:
-            "Explore Artificial Intelligence, Machine Learning and intelligent systems."
+            "Explore Artificial Intelligence and Machine Learning."
+
+    },
+
+    library: {
+
+        title: "📚 DIGITAL LIBRARY",
+
+        description:
+            "Study notes, formulas and B.Tech learning material."
+
+    },
+
+    placement: {
+
+        title: "🏆 PLACEMENT CELL",
+
+        description:
+            "Prepare for aptitude, coding and technical interviews."
 
     }
 
@@ -366,25 +515,58 @@ const subjects = {
 
 
 /* =====================================================
+   BUILDING CLICK
+===================================================== */
+
+buildings.forEach(
+    building => {
+
+        building.addEventListener(
+            "click",
+            () => {
+
+                currentSubject =
+                    building.dataset.subject;
+
+                openSubject(
+                    currentSubject
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
    SUBJECT POPUP
 ===================================================== */
 
 const subjectPopup =
-    document.getElementById("subjectPopup");
+    document.getElementById(
+        "subjectPopup"
+    );
 
 const popupTitle =
-    document.getElementById("popupTitle");
+    document.getElementById(
+        "popupTitle"
+    );
 
 const popupDescription =
-    document.getElementById("popupDescription");
+    document.getElementById(
+        "popupDescription"
+    );
 
 
 function openSubject(subject) {
 
     const data =
-        subjects[subject];
+        buildingData[subject];
 
-    if (!data) return;
+
+    if (!data)
+        return;
 
 
     popupTitle.textContent =
@@ -394,39 +576,51 @@ function openSubject(subject) {
         data.description;
 
 
-    subjectPopup.classList.remove("hidden");
+    subjectPopup.classList.remove(
+        "hidden"
+    );
 
 }
 
 
 /* =====================================================
-   CLOSE SUBJECT POPUP
+   CLOSE POPUP
 ===================================================== */
 
 document
     .getElementById("closePopup")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        subjectPopup.classList.add("hidden");
+            subjectPopup.classList.add(
+                "hidden"
+            );
 
-    });
+        }
+    );
 
 
 /* =====================================================
-   CHALLENGE SYSTEM
+   CHALLENGE
 ===================================================== */
 
 document
     .getElementById("challengeButton")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        subjectPopup.classList.add("hidden");
+            subjectPopup.classList.add(
+                "hidden"
+            );
 
-        startChallenge(
-            currentSubject
-        );
+            startChallenge(
+                currentSubject
+            );
 
-    });
+        }
+    );
 
 
 /* =====================================================
@@ -449,11 +643,12 @@ const questionBank = {
             ],
 
             correct: 1
+
         },
 
         {
             question:
-                "Which symbol is commonly used to terminate a statement in C?",
+                "Which symbol terminates a statement in C?",
 
             answers: [
                 ":",
@@ -463,6 +658,22 @@ const questionBank = {
             ],
 
             correct: 1
+
+        },
+
+        {
+            question:
+                "Which language is known for indentation-based blocks?",
+
+            answers: [
+                "C",
+                "Python",
+                "SQL",
+                "HTML"
+            ],
+
+            correct: 1
+
         }
 
     ],
@@ -477,11 +688,12 @@ const questionBank = {
             answers: [
                 "Queue",
                 "Stack",
-                "Graph",
-                "Tree"
+                "Tree",
+                "Graph"
             ],
 
             correct: 1
+
         },
 
         {
@@ -490,12 +702,28 @@ const questionBank = {
 
             answers: [
                 "Stack",
-                "Tree",
                 "Queue",
+                "Tree",
                 "Graph"
             ],
 
-            correct: 2
+            correct: 1
+
+        },
+
+        {
+            question:
+                "Which algorithm is commonly used for shortest paths?",
+
+            answers: [
+                "Dijkstra",
+                "Bubble Sort",
+                "Binary Search",
+                "Selection Sort"
+            ],
+
+            correct: 0
+
         }
 
     ],
@@ -505,16 +733,32 @@ const questionBank = {
 
         {
             question:
-                "Which language is mainly used to query relational databases?",
+                "Which language is mainly used for relational database queries?",
 
             answers: [
                 "SQL",
                 "HTML",
                 "CSS",
-                "XML"
+                "Python"
             ],
 
             correct: 0
+
+        },
+
+        {
+            question:
+                "What does DBMS stand for?",
+
+            answers: [
+                "Data Backup Management System",
+                "Database Management System",
+                "Digital Binary Management System",
+                "Database Memory System"
+            ],
+
+            correct: 1
+
         }
 
     ],
@@ -534,6 +778,22 @@ const questionBank = {
             ],
 
             correct: 2
+
+        },
+
+        {
+            question:
+                "What does IP stand for?",
+
+            answers: [
+                "Internet Protocol",
+                "Internal Program",
+                "Internet Process",
+                "Input Protocol"
+            ],
+
+            correct: 0
+
         }
 
     ],
@@ -553,6 +813,22 @@ const questionBank = {
             ],
 
             correct: 0
+
+        },
+
+        {
+            question:
+                "Which is responsible for process scheduling?",
+
+            answers: [
+                "Operating System",
+                "Compiler",
+                "Browser",
+                "Database"
+            ],
+
+            correct: 0
+
         }
 
     ],
@@ -572,6 +848,57 @@ const questionBank = {
             ],
 
             correct: 1
+
+        },
+
+        {
+            question:
+                "Which is a branch of AI?",
+
+            answers: [
+                "Machine Learning",
+                "HTML",
+                "CSS",
+                "SQL"
+            ],
+
+            correct: 0
+
+        }
+
+    ],
+
+
+    placement: [
+
+        {
+            question:
+                "Which data structure is frequently asked in coding interviews?",
+
+            answers: [
+                "Stack",
+                "Image",
+                "HTML",
+                "Color"
+            ],
+
+            correct: 0
+
+        },
+
+        {
+            question:
+                "Which skill is important for technical placements?",
+
+            answers: [
+                "DSA",
+                "Only gaming",
+                "Only typing",
+                "None"
+            ],
+
+            correct: 0
+
         }
 
     ]
@@ -587,8 +914,6 @@ let currentQuestions = [];
 
 let currentQuestionIndex = 0;
 
-let challengeSubject = null;
-
 
 /* =====================================================
    START CHALLENGE
@@ -596,12 +921,8 @@ let challengeSubject = null;
 
 function startChallenge(subject) {
 
-    challengeSubject = subject;
-
     currentQuestions =
         questionBank[subject] || [];
-
-    currentQuestionIndex = 0;
 
 
     if (
@@ -609,7 +930,7 @@ function startChallenge(subject) {
     ) {
 
         alert(
-            "Challenges coming soon!"
+            "Study content coming soon!"
         );
 
         return;
@@ -617,9 +938,16 @@ function startChallenge(subject) {
     }
 
 
+    currentQuestionIndex = 0;
+
+
     document
-        .getElementById("questionPopup")
-        .classList.remove("hidden");
+        .getElementById(
+            "questionPopup"
+        )
+        .classList.remove(
+            "hidden"
+        );
 
 
     showQuestion();
@@ -640,39 +968,62 @@ function showQuestion() {
 
 
     document
-        .getElementById("questionTitle")
+        .getElementById(
+            "questionNumber"
+        )
         .textContent =
-        "Challenge " +
-        (currentQuestionIndex + 1);
+        currentQuestionIndex + 1;
 
 
     document
-        .getElementById("questionText")
+        .getElementById(
+            "questionTitle"
+        )
+        .textContent =
+        "Challenge";
+
+
+    document
+        .getElementById(
+            "questionText"
+        )
         .textContent =
         question.question;
 
 
     const answers =
-        document.getElementById("answers");
+        document.getElementById(
+            "answers"
+        );
+
 
     answers.innerHTML = "";
 
 
     document
-        .getElementById("result")
+        .getElementById(
+            "result"
+        )
         .textContent = "";
 
 
     document
-        .getElementById("nextQuestion")
-        .classList.add("hidden");
+        .getElementById(
+            "nextQuestion"
+        )
+        .classList.add(
+            "hidden"
+        );
 
 
     question.answers.forEach(
         (answer, index) => {
 
             const button =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
+
 
             button.textContent =
                 answer;
@@ -701,7 +1052,7 @@ function showQuestion() {
 
 
 /* =====================================================
-   CHECK ANSWER
+   ANSWER
 ===================================================== */
 
 function checkAnswer(index) {
@@ -713,7 +1064,9 @@ function checkAnswer(index) {
 
 
     const result =
-        document.getElementById("result");
+        document.getElementById(
+            "result"
+        );
 
 
     const buttons =
@@ -732,11 +1085,12 @@ function checkAnswer(index) {
 
 
     if (
-        index === question.correct
+        index ===
+        question.correct
     ) {
 
         result.textContent =
-            "✅ Correct! +100 XP";
+            "✅ Correct! +100 XP +25 Coins";
 
         result.style.color =
             "#66ff99";
@@ -746,32 +1100,39 @@ function checkAnswer(index) {
 
         coins += 25;
 
+
         updateHUD();
 
     } else {
 
         result.textContent =
-            "❌ Incorrect!";
+            "❌ Incorrect. Try to learn from the explanation.";
 
         result.style.color =
-            "#ff6666";
+            "#ff7777";
 
     }
 
 
     document
-        .getElementById("nextQuestion")
-        .classList.remove("hidden");
+        .getElementById(
+            "nextQuestion"
+        )
+        .classList.remove(
+            "hidden"
+        );
 
 }
 
 
 /* =====================================================
-   NEXT QUESTION
+   NEXT
 ===================================================== */
 
 document
-    .getElementById("nextQuestion")
+    .getElementById(
+        "nextQuestion"
+    )
     .addEventListener(
         "click",
         () => {
@@ -797,25 +1158,34 @@ document
 
 
 /* =====================================================
-   FINISH CHALLENGE
+   FINISH
 ===================================================== */
 
 function finishChallenge() {
 
     document
-        .getElementById("questionPopup")
-        .classList.add("hidden");
+        .getElementById(
+            "questionPopup"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    coins += 50;
+
+    updateHUD();
 
 
     alert(
-        "🎉 Challenge completed!"
+        "🎉 Challenge Complete!\n\n+50 Bonus Coins"
     );
 
 }
 
 
 /* =====================================================
-   XP SYSTEM
+   XP
 ===================================================== */
 
 function addXP(amount) {
@@ -823,21 +1193,21 @@ function addXP(amount) {
     xp += amount;
 
 
-    const requiredXP =
+    const required =
         level * 500;
 
 
     if (
-        xp >= requiredXP
+        xp >= required
     ) {
+
+        xp -= required;
 
         level++;
 
-        xp -= requiredXP;
-
 
         alert(
-            "🎉 LEVEL UP!\n\nYou reached Level " +
+            "🎉 LEVEL UP!\n\nLevel " +
             level
         );
 
@@ -868,10 +1238,434 @@ function updateHUD() {
 
 
 /* =====================================================
+   NEARBY SYSTEM
+===================================================== */
+
+function checkNearby() {
+
+    nearbyBuilding = null;
+
+    nearbyNPC = null;
+
+
+    let nearestDistance =
+        Infinity;
+
+
+    /* BUILDINGS */
+
+    buildings.forEach(
+        building => {
+
+            const rect =
+                building.getBoundingClientRect();
+
+
+            const campusX =
+                parseFloat(
+                    building.style.left ||
+                    getComputedStyle(
+                        building
+                    ).left
+                );
+
+
+            const campusY =
+                parseFloat(
+                    building.style.top ||
+                    getComputedStyle(
+                        building
+                    ).top
+                );
+
+
+            const centerX =
+                campusX +
+                building.offsetWidth / 2;
+
+
+            const centerY =
+                campusY +
+                building.offsetHeight / 2;
+
+
+            const dx =
+                player.x -
+                centerX;
+
+
+            const dy =
+                player.y -
+                centerY;
+
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            if (
+                distance <
+                180 &&
+                distance <
+                nearestDistance
+            ) {
+
+                nearestDistance =
+                    distance;
+
+                nearbyBuilding =
+                    building;
+
+            }
+
+        }
+    );
+
+
+    buildings.forEach(
+        building => {
+
+            building.classList.remove(
+                "near"
+            );
+
+        }
+    );
+
+
+    if (nearbyBuilding) {
+
+        nearbyBuilding.classList.add(
+            "near"
+        );
+
+
+        const subject =
+            nearbyBuilding.dataset.subject;
+
+
+        interaction.textContent =
+            "🏫 " +
+            buildingData[subject].title +
+            " — Press E or ENTER";
+
+
+        interactButton.classList.remove(
+            "hidden"
+        );
+
+
+        return;
+
+    }
+
+
+    /* NPC */
+
+    checkNPC();
+
+}
+
+
+/* =====================================================
+   NPC
+===================================================== */
+
+function checkNPC() {
+
+    const npcs = [
+
+        document.getElementById(
+            "teacher"
+        ),
+
+        document.getElementById(
+            "studentNPC"
+        )
+
+    ];
+
+
+    let nearest = null;
+
+    let distanceBest =
+        Infinity;
+
+
+    npcs.forEach(
+        npc => {
+
+            const x =
+                parseFloat(
+                    getComputedStyle(
+                        npc
+                    ).left
+                );
+
+
+            const y =
+                parseFloat(
+                    getComputedStyle(
+                        npc
+                    ).top
+                );
+
+
+            const dx =
+                player.x - x;
+
+
+            const dy =
+                player.y - y;
+
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            if (
+                distance < 120 &&
+                distance <
+                distanceBest
+            ) {
+
+                nearest = npc;
+
+                distanceBest =
+                    distance;
+
+            }
+
+        }
+    );
+
+
+    if (nearest) {
+
+        nearbyNPC =
+            nearest;
+
+
+        interaction.textContent =
+            "💬 Talk to " +
+            (
+                nearest.id ===
+                "teacher"
+                    ? "Professor"
+                    : "Student"
+            ) +
+            " — Press E";
+
+
+        interactButton.classList.remove(
+            "hidden"
+        );
+
+    } else {
+
+        nearbyNPC = null;
+
+
+        interaction.textContent =
+            "Explore the campus";
+
+
+        interactButton.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   INTERACT
+===================================================== */
+
+interactButton.addEventListener(
+    "click",
+    interact
+);
+
+
+function interact() {
+
+    if (nearbyBuilding) {
+
+        currentSubject =
+            nearbyBuilding.dataset.subject;
+
+
+        openSubject(
+            currentSubject
+        );
+
+
+        return;
+
+    }
+
+
+    if (nearbyNPC) {
+
+        openDialogue(
+            nearbyNPC.id
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DIALOGUE
+===================================================== */
+
+const dialoguePopup =
+    document.getElementById(
+        "dialoguePopup"
+    );
+
+const dialogueCharacter =
+    document.getElementById(
+        "dialogueCharacter"
+    );
+
+const dialogueName =
+    document.getElementById(
+        "dialogueName"
+    );
+
+const dialogueText =
+    document.getElementById(
+        "dialogueText"
+    );
+
+
+const dialogues = {
+
+    teacher: [
+
+        "Welcome, student!",
+
+        "Your goal is not just to pass exams.",
+
+        "Learn programming and build real projects.",
+
+        "Visit the Coding Lab to start your journey."
+
+    ],
+
+    studentNPC: [
+
+        "Hey! Have you tried the DSA Dungeon?",
+
+        "I am practicing coding every day.",
+
+        "The Placement Cell is useful for interview preparation."
+
+    ]
+
+};
+
+
+let dialogueIndex = 0;
+
+let dialogueType = "";
+
+
+function openDialogue(type) {
+
+    dialogueType =
+        type;
+
+    dialogueIndex = 0;
+
+
+    dialoguePopup.classList.remove(
+        "hidden"
+    );
+
+
+    showDialogue();
+
+}
+
+
+function showDialogue() {
+
+    const data =
+        dialogues[
+            dialogueType
+        ];
+
+
+    dialogueCharacter.textContent =
+        dialogueType === "teacher"
+            ? "👨‍🏫"
+            : "🧑‍🎓";
+
+
+    dialogueName.textContent =
+        dialogueType === "teacher"
+            ? "Professor"
+            : "Student";
+
+
+    dialogueText.textContent =
+        data[dialogueIndex];
+
+}
+
+
+/* =====================================================
+   NEXT DIALOGUE
+===================================================== */
+
+document
+    .getElementById(
+        "dialogueNext"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            dialogueIndex++;
+
+
+            if (
+                dialogueIndex >=
+                dialogues[
+                    dialogueType
+                ].length
+            ) {
+
+                dialoguePopup.classList.add(
+                    "hidden"
+                );
+
+            } else {
+
+                showDialogue();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
    MOBILE CONTROLS
 ===================================================== */
 
-function mobileKey(key) {
+function mobileMove(key) {
 
     keys[key] = true;
 
@@ -882,42 +1676,132 @@ function mobileKey(key) {
             keys[key] = false;
 
         },
-        150
+        160
     );
 
 }
 
 
-document
-    .getElementById("up")
-    .addEventListener(
+function setupMobileButton(
+    id,
+    key
+) {
+
+    const button =
+        document.getElementById(id);
+
+
+    button.addEventListener(
         "touchstart",
-        () => mobileKey("w")
+        event => {
+
+            event.preventDefault();
+
+            keys[key] = true;
+
+        }
     );
 
 
-document
-    .getElementById("down")
-    .addEventListener(
-        "touchstart",
-        () => mobileKey("s")
+    button.addEventListener(
+        "touchend",
+        event => {
+
+            event.preventDefault();
+
+            keys[key] = false;
+
+        }
     );
 
 
-document
-    .getElementById("left")
-    .addEventListener(
-        "touchstart",
-        () => mobileKey("a")
+    button.addEventListener(
+        "mousedown",
+        () => {
+
+            keys[key] = true;
+
+        }
     );
 
 
-document
-    .getElementById("right")
-    .addEventListener(
-        "touchstart",
-        () => mobileKey("d")
+    button.addEventListener(
+        "mouseup",
+        () => {
+
+            keys[key] = false;
+
+        }
     );
+
+}
+
+
+setupMobileButton(
+    "up",
+    "w"
+);
+
+setupMobileButton(
+    "down",
+    "s"
+);
+
+setupMobileButton(
+    "left",
+    "a"
+);
+
+setupMobileButton(
+    "right",
+    "d"
+);
+
+
+/* =====================================================
+   GAME LOOP
+===================================================== */
+
+function gameLoop() {
+
+    if (
+        gameStarted &&
+        document
+            .getElementById(
+                "questionPopup"
+            )
+            .classList.contains(
+                "hidden"
+            ) &&
+        document
+            .getElementById(
+                "subjectPopup"
+            )
+            .classList.contains(
+                "hidden"
+            ) &&
+        document
+            .getElementById(
+                "dialoguePopup"
+            )
+            .classList.contains(
+                "hidden"
+            )
+    ) {
+
+        movePlayer();
+
+    }
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+gameLoop();
 
 
 /* =====================================================
@@ -926,6 +1810,8 @@ document
 
 updateHUD();
 
+updatePlayer();
+
 console.log(
-    "BTECH QUEST loaded successfully!"
+    "BTECH QUEST STEP 2 loaded."
 );
