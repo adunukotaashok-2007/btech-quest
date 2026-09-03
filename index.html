@@ -2,666 +2,987 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        content="width=device-width, initial-scale=1.0"
     >
 
     <title>BTECH QUEST</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-<div id="game">
 
-    <!-- =========================
-         MAIN MENU
-    ========================== -->
+<!-- =====================================================
+     MAIN MENU
+===================================================== -->
 
-    <section id="menu" class="screen">
+<div
+    id="mainMenu"
+    class="screen"
+>
 
-        <div class="menu-box">
+    <div class="menu-card">
 
-            <div class="logo">
-                BTECH
-                <span>QUEST</span>
-            </div>
-
-            <p class="tagline">
-                Learn • Play • Code • Compete
-            </p>
-
-            <button id="startButton">
-                🎮 START GAME
-            </button>
-
-            <button id="howButton">
-                📖 HOW TO PLAY
-            </button>
-
-            <button id="aboutButton">
-                ℹ️ ABOUT
-            </button>
-
+        <div class="logo">
+            🎓
         </div>
 
-    </section>
+        <h1>
+            BTECH QUEST
+        </h1>
+
+        <p class="subtitle">
+            The Ultimate B.Tech Learning Adventure
+        </p>
 
 
-    <!-- =========================
-         HOW TO PLAY
-    ========================== -->
-
-    <section id="howScreen" class="screen hidden">
-
-        <div class="panel">
-
-            <h1>HOW TO PLAY</h1>
-
-            <p>
-                Explore the B.Tech campus and visit different
-                laboratories.
-            </p>
-
-            <div class="instructions">
-
-                <div>
-                    <strong>⌨️ COMPUTER</strong>
-                    <p>Use WASD or Arrow Keys.</p>
-                </div>
-
-                <div>
-                    <strong>📱 MOBILE</strong>
-                    <p>Use the on-screen controls.</p>
-                </div>
-
-                <div>
-                    <strong>🏫 EXPLORE</strong>
-                    <p>Walk near buildings and interact.</p>
-                </div>
-
-                <div>
-                    <strong>🧠 LEARN</strong>
-                    <p>Complete challenges to earn XP.</p>
-                </div>
-
-            </div>
-
-            <button id="backButton">
-                BACK
-            </button>
-
-        </div>
-
-    </section>
+        <button
+            id="startGameButton"
+            class="main-button"
+        >
+            ▶ START GAME
+        </button>
 
 
-    <!-- =========================
-         ABOUT
-    ========================== -->
-
-    <section id="aboutScreen" class="screen hidden">
-
-        <div class="panel">
-
-            <h1>BTECH QUEST</h1>
-
-            <p>
-                A game designed to make B.Tech learning
-                more interactive.
-            </p>
-
-            <p>
-                Programming • DSA • DBMS • OS • Networks
-                • AI • Cybersecurity • Aptitude
-                • Placements
-            </p>
-
-            <p class="version">
-                Version 0.2
-            </p>
-
-            <button id="aboutBackButton">
-                BACK
-            </button>
-
-        </div>
-
-    </section>
+        <button
+            id="howToButton"
+            class="secondary-button"
+        >
+            ❓ HOW TO PLAY
+        </button>
 
 
-    <!-- =========================
-         GAME
-    ========================== -->
+        <button
+            id="aboutButton"
+            class="secondary-button"
+        >
+            ℹ️ ABOUT
+        </button>
 
-    <section id="gameScreen" class="hidden">
+    </div>
 
-        <!-- HUD -->
+</div>
 
-        <div id="hud">
+
+
+<!-- =====================================================
+     GAME SCREEN
+===================================================== -->
+
+<div
+    id="gameScreen"
+    class="screen hidden"
+>
+
+
+    <!-- HUD -->
+
+    <div class="hud">
+
+        <div class="hud-left">
 
             <div class="hud-item">
-
-                <span>LEVEL</span>
-
-                <strong id="level">
-                    1
-                </strong>
-
+                🎓
+                <span id="playerLevel">
+                    Level 1
+                </span>
             </div>
 
             <div class="hud-item">
-
-                <span>XP</span>
-
-                <strong id="xp">
-                    0
-                </strong>
-
+                ⭐
+                <span id="playerXP">
+                    XP: 0
+                </span>
             </div>
 
             <div class="hud-item">
-
-                <span>COINS</span>
-
-                <strong id="coins">
-                    100
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <!-- PLAYER STATUS -->
-
-        <div id="status">
-
-            <div>
-                🧑‍💻
-                <span id="playerStatus">
-                    Student
+                🪙
+                <span id="playerCoins">
+                    Coins: 100
                 </span>
             </div>
 
         </div>
 
 
-        <!-- INTERACTION MESSAGE -->
+        <button
+            id="menuButton"
+            class="small-button"
+        >
+            ☰
+        </button>
 
-        <div id="interaction">
+    </div>
 
-            Walk near a building
 
-        </div>
 
+    <!-- GAME WORLD -->
 
-        <!-- CAMERA -->
+    <div
+        id="world"
+        class="world"
+    >
 
-        <div id="camera">
 
-            <!-- CAMPUS -->
+        <!-- ROADS -->
 
-            <div id="campus">
+        <div class="road road-horizontal road-1"></div>
 
-                <div class="campus-title">
-                    🎓 BTECH UNIVERSITY
-                </div>
+        <div class="road road-horizontal road-2"></div>
 
+        <div class="road road-vertical road-3"></div>
 
-                <!-- ROAD -->
+        <div class="road road-vertical road-4"></div>
 
-                <div class="road road-horizontal road1"></div>
-                <div class="road road-horizontal road2"></div>
 
-                <div class="road road-vertical road3"></div>
-                <div class="road road-vertical road4"></div>
 
+        <!-- CAMPUS SIGN -->
 
-                <!-- CODING -->
+        <div class="campus-sign">
 
-                <div
-                    class="building programming"
-                    data-subject="programming"
-                >
-
-                    <div class="building-icon">
-                        💻
-                    </div>
-
-                    <h2>
-                        CODING LAB
-                    </h2>
-
-                    <p>
-                        C • C++ • Java • Python
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- DSA -->
-
-                <div
-                    class="building dsa"
-                    data-subject="dsa"
-                >
-
-                    <div class="building-icon">
-                        🧠
-                    </div>
-
-                    <h2>
-                        DSA DUNGEON
-                    </h2>
-
-                    <p>
-                        Algorithms & Data Structures
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- DBMS -->
-
-                <div
-                    class="building dbms"
-                    data-subject="dbms"
-                >
-
-                    <div class="building-icon">
-                        🗄️
-                    </div>
-
-                    <h2>
-                        DB LAB
-                    </h2>
-
-                    <p>
-                        SQL & DBMS
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- NETWORK -->
-
-                <div
-                    class="building networks"
-                    data-subject="networks"
-                >
-
-                    <div class="building-icon">
-                        🌐
-                    </div>
-
-                    <h2>
-                        NETWORK LAB
-                    </h2>
-
-                    <p>
-                        Computer Networks
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- OS -->
-
-                <div
-                    class="building os"
-                    data-subject="os"
-                >
-
-                    <div class="building-icon">
-                        🖥️
-                    </div>
-
-                    <h2>
-                        OS LAB
-                    </h2>
-
-                    <p>
-                        Operating Systems
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- AI -->
-
-                <div
-                    class="building ai"
-                    data-subject="ai"
-                >
-
-                    <div class="building-icon">
-                        🤖
-                    </div>
-
-                    <h2>
-                        AI LAB
-                    </h2>
-
-                    <p>
-                        AI & Machine Learning
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- LIBRARY -->
-
-                <div
-                    class="building library"
-                    data-subject="library"
-                >
-
-                    <div class="building-icon">
-                        📚
-                    </div>
-
-                    <h2>
-                        DIGITAL LIBRARY
-                    </h2>
-
-                    <p>
-                        Notes & Study Material
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- PLACEMENT -->
-
-                <div
-                    class="building placement"
-                    data-subject="placement"
-                >
-
-                    <div class="building-icon">
-                        🏆
-                    </div>
-
-                    <h2>
-                        PLACEMENT CELL
-                    </h2>
-
-                    <p>
-                        Interviews & Aptitude
-                    </p>
-
-                    <div class="door">
-                        ENTER
-                    </div>
-
-                </div>
-
-
-                <!-- CAFETERIA -->
-
-                <div class="building cafeteria">
-
-                    <div class="building-icon">
-                        🍔
-                    </div>
-
-                    <h2>
-                        CAFETERIA
-                    </h2>
-
-                    <p>
-                        Take a break
-                    </p>
-
-                </div>
-
-
-                <!-- TEACHER -->
-
-                <div
-                    id="teacher"
-                    class="npc"
-                >
-
-                    <div class="npc-character">
-                        👨‍🏫
-                    </div>
-
-                    <div class="npc-name">
-                        Professor
-                    </div>
-
-                </div>
-
-
-                <!-- STUDENT NPC -->
-
-                <div
-                    id="studentNPC"
-                    class="npc"
-                >
-
-                    <div class="npc-character">
-                        🧑‍🎓
-                    </div>
-
-                    <div class="npc-name">
-                        Student
-                    </div>
-
-                </div>
-
-
-                <!-- PLAYER -->
-
-                <div id="player">
-
-                    <div class="player-body">
-                        🧑‍💻
-                    </div>
-
-                    <div class="player-name">
-                        YOU
-                    </div>
-
-                </div>
-
+            <div class="sign-icon">
+                🎓
             </div>
-
-        </div>
-
-
-        <!-- MOBILE CONTROLS -->
-
-        <div id="mobileControls">
-
-            <button
-                id="up"
-                class="control"
-            >
-                ▲
-            </button>
 
             <div>
+                <strong>
+                    BTECH QUEST
+                </strong>
 
-                <button
-                    id="left"
-                    class="control"
-                >
-                    ◀
-                </button>
-
-                <button
-                    id="down"
-                    class="control"
-                >
-                    ▼
-                </button>
-
-                <button
-                    id="right"
-                    class="control"
-                >
-                    ▶
-                </button>
-
+                <small>
+                    ENGINEERING CAMPUS
+                </small>
             </div>
 
         </div>
 
 
-        <!-- INTERACTION BUTTON -->
+
+        <!-- =================================================
+             BUILDINGS
+        ================================================== -->
+
+
+        <!-- CODING LAB -->
+
+        <div
+            class="building programming"
+            data-subject="programming"
+        >
+
+            <div class="building-icon">
+                💻
+            </div>
+
+            <h2>
+                CODING LAB
+            </h2>
+
+            <p>
+                C • C++ • Java • Python
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- DSA -->
+
+        <div
+            class="building dsa"
+            data-subject="dsa"
+        >
+
+            <div class="building-icon">
+                🧠
+            </div>
+
+            <h2>
+                DSA DUNGEON
+            </h2>
+
+            <p>
+                Data Structures & Algorithms
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- DBMS -->
+
+        <div
+            class="building dbms"
+            data-subject="dbms"
+        >
+
+            <div class="building-icon">
+                🗄️
+            </div>
+
+            <h2>
+                DB LAB
+            </h2>
+
+            <p>
+                DBMS • SQL • Database
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- NETWORK -->
+
+        <div
+            class="building networks"
+            data-subject="networks"
+        >
+
+            <div class="building-icon">
+                🌐
+            </div>
+
+            <h2>
+                NETWORK LAB
+            </h2>
+
+            <p>
+                Computer Networks
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- OS -->
+
+        <div
+            class="building os"
+            data-subject="os"
+        >
+
+            <div class="building-icon">
+                🖥️
+            </div>
+
+            <h2>
+                OS LAB
+            </h2>
+
+            <p>
+                Operating Systems
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- AI -->
+
+        <div
+            class="building ai"
+            data-subject="ai"
+        >
+
+            <div class="building-icon">
+                🤖
+            </div>
+
+            <h2>
+                AI LAB
+            </h2>
+
+            <p>
+                AI • Machine Learning
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- LIBRARY -->
+
+        <div
+            class="building library"
+            data-subject="library"
+        >
+
+            <div class="building-icon">
+                📚
+            </div>
+
+            <h2>
+                DIGITAL LIBRARY
+            </h2>
+
+            <p>
+                Notes • Books • Resources
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- PLACEMENT -->
+
+        <div
+            class="building placement"
+            data-subject="placement"
+        >
+
+            <div class="building-icon">
+                🏢
+            </div>
+
+            <h2>
+                PLACEMENT CELL
+            </h2>
+
+            <p>
+                Aptitude • Interview • Jobs
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- CAFETERIA -->
+
+        <div
+            class="building cafeteria"
+            data-subject="cafeteria"
+        >
+
+            <div class="building-icon">
+                🍔
+            </div>
+
+            <h2>
+                CAFETERIA
+            </h2>
+
+            <p>
+                Take a break!
+            </p>
+
+            <div class="door">
+                ENTER
+            </div>
+
+        </div>
+
+
+
+        <!-- NPC PROFESSOR -->
+
+        <div
+            id="professor"
+            class="npc professor"
+        >
+
+            <div class="npc-icon">
+                👨‍🏫
+            </div>
+
+            <span>
+                Professor
+            </span>
+
+        </div>
+
+
+
+        <!-- NPC STUDENT -->
+
+        <div
+            id="student"
+            class="npc student"
+        >
+
+            <div class="npc-icon">
+                🧑‍🎓
+            </div>
+
+            <span>
+                Student
+            </span>
+
+        </div>
+
+
+
+        <!-- PLAYER -->
+
+        <div
+            id="player"
+            class="player"
+        >
+
+            <div class="player-icon">
+                🧑‍💻
+            </div>
+
+            <div class="player-name">
+                You
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         MOBILE CONTROLS
+    ================================================== -->
+
+    <div class="mobile-controls">
+
+        <button
+            id="upButton"
+            class="control-button"
+        >
+            ▲
+        </button>
+
+        <div>
+
+            <button
+                id="leftButton"
+                class="control-button"
+            >
+                ◀
+            </button>
+
+            <button
+                id="downButton"
+                class="control-button"
+            >
+                ▼
+            </button>
+
+            <button
+                id="rightButton"
+                class="control-button"
+            >
+                ▶
+            </button>
+
+        </div>
 
         <button
             id="interactButton"
-            class="hidden"
+            class="interact-button"
         >
-            ENTER / TALK
+            E
         </button>
 
-
-        <!-- SUBJECT POPUP -->
-
-        <div
-            id="subjectPopup"
-            class="popup hidden"
-        >
-
-            <div class="popup-box">
-
-                <button
-                    id="closePopup"
-                    class="close"
-                >
-                    ×
-                </button>
-
-                <h1 id="popupTitle">
-                    Coding Lab
-                </h1>
-
-                <p id="popupDescription">
-                    Welcome.
-                </p>
-
-                <button id="challengeButton">
-                    START CHALLENGE
-                </button>
-
-            </div>
-
-        </div>
+    </div>
 
 
-        <!-- QUESTION POPUP -->
+    <!-- INTERACTION MESSAGE -->
 
-        <div
-            id="questionPopup"
-            class="popup hidden"
-        >
+    <div
+        id="interactionMessage"
+        class="interaction-message hidden"
+    >
+        Press E to interact
+    </div>
 
-            <div class="question-box">
-
-                <div class="question-progress">
-
-                    Question
-                    <span id="questionNumber">
-                        1
-                    </span>
-
-                </div>
-
-                <h2 id="questionTitle">
-                    Challenge
-                </h2>
-
-                <p id="questionText">
-                    Question
-                </p>
-
-                <div id="answers"></div>
-
-                <div id="result"></div>
-
-                <button
-                    id="nextQuestion"
-                    class="hidden"
-                >
-                    NEXT
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- NPC DIALOGUE -->
-
-        <div
-            id="dialoguePopup"
-            class="popup hidden"
-        >
-
-            <div class="dialogue-box">
-
-                <div id="dialogueCharacter">
-                    👨‍🏫
-                </div>
-
-                <h2 id="dialogueName">
-                    Professor
-                </h2>
-
-                <p id="dialogueText">
-                    Welcome to BTECH QUEST!
-                </p>
-
-                <button id="dialogueNext">
-                    NEXT
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
 
 </div>
 
+
+
+<!-- =====================================================
+     SUBJECT POPUP
+===================================================== -->
+
+<div
+    id="subjectPopup"
+    class="popup hidden"
+>
+
+    <div class="popup-box">
+
+        <button
+            id="closeSubjectPopup"
+            class="close"
+        >
+            ×
+        </button>
+
+
+        <div
+            id="subjectIcon"
+            class="popup-icon"
+        >
+            💻
+        </div>
+
+
+        <h2 id="subjectTitle">
+            Coding Lab
+        </h2>
+
+
+        <p id="subjectDescription">
+            Description
+        </p>
+
+
+        <button
+            id="challengeButton"
+            class="main-button"
+        >
+            START CHALLENGE
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     QUESTION POPUP
+===================================================== -->
+
+<div
+    id="questionPopup"
+    class="popup hidden"
+>
+
+    <div class="popup-box question-box">
+
+        <button
+            id="closeQuestionPopup"
+            class="close"
+        >
+            ×
+        </button>
+
+
+        <div class="quiz-label">
+            🎯 CHALLENGE
+        </div>
+
+
+        <h2 id="questionText">
+            Question
+        </h2>
+
+
+        <div
+            id="answers"
+            class="answers"
+        >
+        </div>
+
+
+        <div
+            id="questionResult"
+            class="question-result"
+        >
+        </div>
+
+
+        <button
+            id="nextQuestionButton"
+            class="main-button hidden"
+        >
+            NEXT QUESTION →
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     DIALOGUE POPUP
+===================================================== -->
+
+<div
+    id="dialoguePopup"
+    class="popup hidden"
+>
+
+    <div class="popup-box">
+
+        <button
+            id="closeDialogue"
+            class="close"
+        >
+            ×
+        </button>
+
+
+        <div class="popup-icon">
+            👨‍🏫
+        </div>
+
+
+        <h2 id="dialogueTitle">
+            Professor
+        </h2>
+
+
+        <p id="dialogueText">
+            Welcome to BTECH QUEST.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     HOW TO PLAY
+===================================================== -->
+
+<div
+    id="howToPopup"
+    class="popup hidden"
+>
+
+    <div class="popup-box">
+
+        <button
+            id="closeHowTo"
+            class="close"
+        >
+            ×
+        </button>
+
+
+        <div class="popup-icon">
+            🎮
+        </div>
+
+
+        <h2>
+            HOW TO PLAY
+        </h2>
+
+
+        <p>
+
+            Explore the campus and visit different
+            departments.
+
+        </p>
+
+
+        <ul class="info-list">
+
+            <li>
+                🧑‍💻 Move using WASD or arrow keys.
+            </li>
+
+            <li>
+                📱 On mobile, use the movement buttons.
+            </li>
+
+            <li>
+                🚪 Go near a building and press E.
+            </li>
+
+            <li>
+                ⭐ Complete challenges to earn XP.
+            </li>
+
+            <li>
+                🪙 Earn coins by completing missions.
+            </li>
+
+            <li>
+                💻 Enter the Coding Lab for programming challenges.
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<div
+    id="aboutPopup"
+    class="popup hidden"
+>
+
+    <div class="popup-box">
+
+        <button
+            id="closeAbout"
+            class="close"
+        >
+            ×
+        </button>
+
+
+        <div class="popup-icon">
+            🎓
+        </div>
+
+
+        <h2>
+            BTECH QUEST
+        </h2>
+
+
+        <p>
+
+            A learning adventure designed for
+            engineering students.
+
+        </p>
+
+
+        <p>
+
+            Learn programming, DSA, DBMS,
+            Operating Systems, Networks,
+            AI/ML, aptitude and interview skills
+            through gameplay.
+
+        </p>
+
+
+        <p class="version">
+            STEP 3 • PROGRAMMING ARENA
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CODING ARENA
+===================================================== -->
+
+<div
+    id="codingArena"
+    class="popup hidden"
+>
+
+    <div class="coding-box">
+
+
+        <!-- HEADER -->
+
+        <div class="coding-header">
+
+            <div>
+
+                <span class="coding-badge">
+                    💻 PROGRAMMING ARENA
+                </span>
+
+                <h1 id="codingTitle">
+                    Challenge
+                </h1>
+
+            </div>
+
+
+            <button
+                id="closeCodingArena"
+                class="close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+
+        <!-- INFORMATION -->
+
+        <div class="coding-info">
+
+            <span id="codingLanguage">
+                Python
+            </span>
+
+            <span id="codingDifficulty">
+                Easy
+            </span>
+
+            <span>
+                ⭐
+                <b id="codingXP">
+                    100
+                </b>
+                XP
+            </span>
+
+        </div>
+
+
+
+        <!-- PROBLEM -->
+
+        <div class="coding-problem">
+
+            <h3>
+                📋 Problem
+            </h3>
+
+            <p id="codingDescription">
+                Problem description
+            </p>
+
+        </div>
+
+
+
+        <!-- EDITOR -->
+
+        <div class="editor-title">
+            CODE EDITOR
+        </div>
+
+
+        <textarea
+            id="codeEditor"
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+            autocorrect="off"
+        ></textarea>
+
+
+
+        <!-- BUTTONS -->
+
+        <div class="coding-buttons">
+
+            <button
+                id="runCodeButton"
+            >
+                ▶ RUN CODE
+            </button>
+
+
+            <button
+                id="hintButton"
+            >
+                💡 HINT
+            </button>
+
+
+            <button
+                id="resetCodeButton"
+            >
+                ↻ RESET
+            </button>
+
+        </div>
+
+
+
+        <!-- OUTPUT -->
+
+        <div class="output-title">
+            OUTPUT
+        </div>
+
+
+        <pre id="codeOutput">Ready...</pre>
+
+
+
+        <!-- RESULT -->
+
+        <div
+            id="codeResult"
+            class="code-result"
+        >
+        </div>
+
+
+
+        <!-- NEXT -->
+
+        <button
+            id="nextCodingChallenge"
+            class="main-button hidden"
+        >
+            NEXT CHALLENGE →
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
+<script src="data/codingChallenges.js"></script>
+
 <script src="game.js"></script>
 
+
 </body>
+
 </html>
