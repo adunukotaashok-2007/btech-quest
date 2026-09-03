@@ -1,223 +1,242 @@
 /* =====================================================
    BTECH QUEST
-   STEP 2
+   STEP 3
 ===================================================== */
 
 * {
+
     box-sizing: border-box;
+
     margin: 0;
+
     padding: 0;
 
     -webkit-tap-highlight-color: transparent;
+
 }
+
 
 html,
 body {
+
     width: 100%;
+
     height: 100%;
 
     overflow: hidden;
 
-    font-family: Arial, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    background: #070711;
+    background:
+        radial-gradient(
+            circle at top,
+            #281653,
+            transparent 45%
+        ),
+        linear-gradient(
+            135deg,
+            #07000f,
+            #130020,
+            #050008
+        );
 
     color: white;
+
 }
 
+
+button,
+input,
+textarea {
+
+    font: inherit;
+
+}
+
+
 button {
+
     border: none;
 
     cursor: pointer;
 
-    font-family: inherit;
 }
 
+
 .hidden {
+
     display: none !important;
+
 }
+
 
 
 /* =====================================================
-   SCREEN
+   MAIN SCREEN
 ===================================================== */
 
 .screen {
 
-    position: fixed;
+    width: 100%;
 
-    inset: 0;
+    height: 100vh;
+
+}
+
+
+#mainMenu {
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    background:
-        radial-gradient(
-            circle at center,
-            #25245f,
-            #09091b 60%,
-            #020207
-        );
+    padding: 20px;
+
 }
 
 
-/* =====================================================
-   MENU
-===================================================== */
+.menu-card {
 
-.menu-box {
+    width: min(
+        92%,
+        480px
+    );
 
-    width: min(92%, 500px);
-
-    padding: 45px 30px;
+    padding: 40px 25px;
 
     text-align: center;
 
+    border-radius: 22px;
+
     background:
-        rgba(18, 18, 40, 0.96);
+        rgba(
+            20,
+            10,
+            35,
+            0.94
+        );
 
-    border:
-
-        2px solid #6363ff;
-
-    border-radius: 25px;
+    border: 1px solid #553477;
 
     box-shadow:
+        0 20px 70px
+        rgba(
+            0,
+            0,
+            0,
+            0.55
+        );
 
-        0 0 50px
-        rgba(70, 70, 255, 0.35);
 }
+
 
 .logo {
 
-    font-size: 55px;
+    font-size: 70px;
 
-    font-weight: 900;
+    margin-bottom: 10px;
 
-    letter-spacing: 5px;
 }
 
-.logo span {
 
-    display: block;
+.menu-card h1 {
 
-    color: #8585ff;
+    font-size: 40px;
+
+    letter-spacing: 2px;
+
 }
 
-.tagline {
 
-    margin:
+.subtitle {
 
-        10px 0 35px;
+    margin: 10px 0 30px;
 
-    color: #aaaabd;
+    color: #bcaed0;
+
+    line-height: 1.5;
+
 }
 
-.menu-box button {
-
-    width: 100%;
-
-    padding: 16px;
-
-    margin: 12px 0;
-
-    border-radius: 12px;
-
-    background: #5555ff;
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    transition: 0.2s;
-}
-
-.menu-box button:hover {
-
-    transform: translateY(-2px);
-
-    background: #7777ff;
-}
 
 
 /* =====================================================
-   PANELS
+   BUTTONS
 ===================================================== */
 
-.panel {
-
-    width: min(92%, 600px);
-
-    padding: 35px;
-
-    text-align: center;
-
-    background: #15152d;
-
-    border:
-
-        2px solid #6262ff;
-
-    border-radius: 20px;
-}
-
-.panel h1 {
-
-    margin-bottom: 20px;
-}
-
-.panel p {
-
-    margin: 12px 0;
-
-    color: #ccccdc;
-
-    line-height: 1.6;
-}
-
-.instructions {
-
-    margin: 25px 0;
-}
-
-.instructions div {
-
-    padding: 12px;
-
-    margin: 8px 0;
-
-    background:
-
-        rgba(255,255,255,0.05);
-
-    border-radius: 10px;
-}
-
-.panel button {
-
-    margin-top: 20px;
-
-    padding: 13px 35px;
-
-    border-radius: 10px;
-
-    background: #5555ff;
+.main-button,
+.secondary-button,
+.small-button {
 
     color: white;
 
+    border-radius: 10px;
+
     font-weight: bold;
+
 }
 
-.version {
 
-    font-size: 12px;
+.main-button {
 
-    color: #777788 !important;
+    width: 100%;
+
+    padding: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5b35b8,
+            #8d4de8
+        );
+
+    box-shadow:
+        0 7px 20px
+        rgba(
+            100,
+            50,
+            200,
+            0.25
+        );
+
 }
+
+
+.main-button:hover {
+
+    transform: translateY(-1px);
+
+}
+
+
+.secondary-button {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 12px;
+
+    background: #292036;
+
+    border: 1px solid #49365f;
+
+}
+
+
+.small-button {
+
+    padding: 10px 14px;
+
+    background: #2c2040;
+
+}
+
 
 
 /* =====================================================
@@ -226,116 +245,81 @@ button {
 
 #gameScreen {
 
-    position: fixed;
-
-    inset: 0;
+    position: relative;
 
     overflow: hidden;
 
-    background: #111827;
 }
 
 
-/* =====================================================
-   HUD
-===================================================== */
-
-#hud {
+.hud {
 
     position: fixed;
 
-    top: 15px;
-    left: 15px;
+    z-index: 100;
 
-    z-index: 500;
+    top: 12px;
+
+    left: 12px;
+
+    right: 12px;
 
     display: flex;
 
-    gap: 10px;
+    align-items: center;
+
+    justify-content: space-between;
+
+    pointer-events: none;
+
 }
+
+
+.hud-left {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+}
+
 
 .hud-item {
 
-    min-width: 85px;
-
     padding: 8px 12px;
 
-    text-align: center;
+    border-radius: 9px;
 
     background:
-        rgba(0,0,0,0.78);
+        rgba(
+            10,
+            5,
+            20,
+            0.88
+        );
 
-    border:
+    border: 1px solid #3f3152;
 
-        1px solid #6565ff;
+    font-size: 12px;
 
-    border-radius: 10px;
-
-    font-size: 10px;
-
-    color: #aaaabc;
 }
 
-.hud-item strong {
 
-    display: block;
+.hud button {
 
-    margin-top: 3px;
+    pointer-events: auto;
 
-    font-size: 18px;
-
-    color: white;
 }
+
 
 
 /* =====================================================
-   STATUS
+   WORLD
 ===================================================== */
 
-#status {
-
-    position: fixed;
-
-    right: 15px;
-    top: 15px;
-
-    z-index: 500;
-
-    padding: 10px 15px;
-
-    background:
-
-        rgba(0,0,0,0.75);
-
-    border:
-
-        1px solid #5555aa;
-
-    border-radius: 10px;
-
-    font-size: 13px;
-}
-
-
-/* =====================================================
-   CAMERA
-===================================================== */
-
-#camera {
-
-    position: absolute;
-
-    inset: 0;
-
-    overflow: hidden;
-}
-
-
-/* =====================================================
-   CAMPUS
-===================================================== */
-
-#campus {
+.world {
 
     position: absolute;
 
@@ -344,52 +328,56 @@ button {
     height: 1200px;
 
     left: 0;
+
     top: 0;
 
     background:
 
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,0.035) 1px,
-            transparent 1px
+        radial-gradient(
+            circle at 20% 20%,
+            #263a2c,
+            transparent 25%
         ),
 
-        linear-gradient(
-            rgba(255,255,255,0.035) 1px,
-            transparent 1px
+        radial-gradient(
+            circle at 80% 70%,
+            #202f28,
+            transparent 25%
         ),
 
-        #18283a;
+        #17231c;
 
-    background-size: 50px 50px;
+    transition:
+        transform 0.08s linear;
+
 }
 
 
-/* =====================================================
-   CAMPUS TITLE
-===================================================== */
+.world::before {
 
-.campus-title {
+    content: "";
 
     position: absolute;
 
-    top: 30px;
-    left: 900px;
+    inset: 0;
 
-    transform:
+    background-image:
+        radial-gradient(
+            rgba(
+                255,
+                255,
+                255,
+                0.035
+            ) 1px,
+            transparent 1px
+        );
 
-        translateX(-50%);
+    background-size: 35px 35px;
 
-    font-size: 32px;
+    pointer-events: none;
 
-    font-weight: 900;
-
-    letter-spacing: 4px;
-
-    text-shadow:
-
-        0 0 20px #7777ff;
 }
+
 
 
 /* =====================================================
@@ -400,50 +388,124 @@ button {
 
     position: absolute;
 
-    background: #303946;
+    background: #4a4b4f;
 
-    border:
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(
+            255,
+            255,
+            255,
+            0.04
+        );
 
-        2px solid #424c5c;
 }
+
 
 .road-horizontal {
 
-    width: 1800px;
+    width: 100%;
 
-    height: 80px;
+    height: 90px;
+
 }
+
+
+.road-1 {
+
+    top: 330px;
+
+}
+
+
+.road-2 {
+
+    top: 760px;
+
+}
+
 
 .road-vertical {
 
-    width: 80px;
+    height: 100%;
 
-    height: 1200px;
+    width: 90px;
+
 }
 
-.road1 {
 
-    top: 370px;
-    left: 0;
+.road-3 {
+
+    left: 520px;
+
 }
 
-.road2 {
 
-    top: 780px;
-    left: 0;
+.road-4 {
+
+    left: 1250px;
+
 }
 
-.road3 {
 
-    left: 380px;
-    top: 0;
+
+/* =====================================================
+   CAMPUS SIGN
+===================================================== */
+
+.campus-sign {
+
+    position: absolute;
+
+    left: 730px;
+
+    top: 55px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px 25px;
+
+    background: #38234e;
+
+    border: 2px solid #77589b;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(
+            0,
+            0,
+            0,
+            0.3
+        );
+
 }
 
-.road4 {
 
-    left: 1200px;
-    top: 0;
+.campus-sign strong {
+
+    display: block;
+
+    font-size: 20px;
+
 }
+
+
+.campus-sign small {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #b9a8c9;
+
+}
+
 
 
 /* =====================================================
@@ -454,210 +516,264 @@ button {
 
     position: absolute;
 
-    width: 280px;
-    height: 190px;
+    width: 270px;
 
-    padding: 18px;
+    min-height: 180px;
+
+    padding: 20px;
 
     text-align: center;
 
-    background:
-
-        linear-gradient(
-            145deg,
-            #242447,
-            #15152e
-        );
-
-    border:
-
-        3px solid #44449a;
-
     border-radius: 18px;
 
+    background:
+        linear-gradient(
+            145deg,
+            #302544,
+            #1d1729
+        );
+
+    border: 2px solid #55436c;
+
     box-shadow:
+        0 12px 35px
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
 
-        0 12px 30px
-        rgba(0,0,0,0.45);
+    transition:
+        transform 0.15s,
+        border-color 0.15s,
+        box-shadow 0.15s;
 
-    cursor: pointer;
-
-    transition: 0.2s;
 }
+
 
 .building:hover {
 
-    transform: scale(1.04);
+    transform: translateY(-3px);
 
-    border-color: #8888ff;
+}
+
+
+.building.nearby {
+
+    border-color: #b18cff;
 
     box-shadow:
-
         0 0 30px
-        rgba(100,100,255,0.35);
+        rgba(
+            150,
+            100,
+            255,
+            0.45
+        );
+
 }
 
-.building.near {
-
-    border-color: #ffff66;
-
-    box-shadow:
-
-        0 0 35px
-        rgba(255,255,80,0.4);
-}
 
 .building-icon {
 
     font-size: 42px;
+
+    margin-bottom: 8px;
+
 }
+
 
 .building h2 {
 
-    margin-top: 6px;
-
     font-size: 18px;
+
 }
+
 
 .building p {
 
-    margin-top: 6px;
+    margin-top: 8px;
 
-    font-size: 11px;
+    color: #bcb3c7;
 
-    color: #aaaabd;
+    font-size: 12px;
+
+    line-height: 1.4;
+
 }
+
 
 .door {
 
     display: inline-block;
 
-    margin-top: 10px;
+    margin-top: 14px;
 
-    padding: 5px 12px;
-
-    background: #3b3b75;
+    padding: 6px 12px;
 
     border-radius: 7px;
+
+    background: #251b32;
+
+    color: #d7c6e8;
 
     font-size: 10px;
 
     font-weight: bold;
+
 }
 
 
-/* =====================================================
-   BUILDING POSITIONS
-===================================================== */
+
+/* BUILDING POSITIONS */
 
 .programming {
 
-    left: 100px;
+    left: 150px;
+
     top: 120px;
+
 }
+
 
 .dsa {
 
-    left: 500px;
-    top: 120px;
+    left: 850px;
+
+    top: 130px;
+
 }
+
 
 .dbms {
 
-    left: 1320px;
-    top: 120px;
+    left: 1380px;
+
+    top: 130px;
+
 }
+
 
 .networks {
 
-    left: 100px;
+    left: 120px;
+
     top: 500px;
+
 }
+
 
 .os {
 
-    left: 500px;
+    left: 850px;
+
     top: 500px;
+
 }
+
 
 .ai {
 
-    left: 1320px;
+    left: 1370px;
+
     top: 500px;
+
 }
+
 
 .library {
 
-    left: 100px;
-    top: 850px;
+    left: 130px;
+
+    top: 900px;
+
 }
+
 
 .placement {
 
-    left: 500px;
-    top: 850px;
+    left: 800px;
+
+    top: 900px;
+
 }
+
 
 .cafeteria {
 
-    left: 1320px;
-    top: 850px;
+    left: 1370px;
+
+    top: 900px;
+
 }
+
 
 
 /* =====================================================
    PLAYER
 ===================================================== */
 
-#player {
+.player {
 
     position: absolute;
 
-    width: 80px;
+    width: 65px;
 
-    text-align: center;
+    height: 80px;
 
-    z-index: 100;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 20;
+
+    pointer-events: none;
+
 }
 
-.player-body {
 
-    width: 62px;
-    height: 62px;
+.player-icon {
+
+    width: 50px;
+
+    height: 50px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
-
-    margin: auto;
-
-    font-size: 42px;
 
     border-radius: 50%;
 
-    background:
+    background: #34205b;
 
-        rgba(0,0,0,0.3);
+    border: 2px solid #a57bff;
 
-    box-shadow:
+    font-size: 28px;
 
-        0 4px 10px
-        rgba(0,0,0,0.4);
 }
+
 
 .player-name {
 
-    margin-top: 3px;
+    margin-top: 4px;
 
-    font-size: 11px;
+    padding: 2px 7px;
 
-    font-weight: bold;
+    border-radius: 5px;
 
-    text-shadow:
+    background: #120b1d;
 
-        0 1px 5px black;
+    font-size: 9px;
+
 }
+
 
 
 /* =====================================================
@@ -668,399 +784,757 @@ button {
 
     position: absolute;
 
-    width: 75px;
+    z-index: 15;
 
-    text-align: center;
+    display: flex;
 
-    z-index: 90;
-}
+    flex-direction: column;
 
-.npc-character {
+    align-items: center;
 
-    font-size: 45px;
-}
+    gap: 4px;
 
-.npc-name {
+    font-size: 10px;
 
-    font-size: 11px;
+    color: #eee;
 
-    font-weight: bold;
-
-    text-shadow:
-
-        0 1px 5px black;
-}
-
-#teacher {
-
-    left: 900px;
-
-    top: 520px;
-}
-
-#studentNPC {
-
-    left: 1050px;
-
-    top: 800px;
 }
 
 
-/* =====================================================
-   INTERACTION
-===================================================== */
+.npc-icon {
 
-#interaction {
+    width: 45px;
 
-    position: fixed;
+    height: 45px;
 
-    left: 50%;
+    display: flex;
 
-    bottom: 30px;
+    align-items: center;
 
-    transform:
+    justify-content: center;
 
-        translateX(-50%);
+    border-radius: 50%;
 
-    z-index: 400;
+    background: #332c3d;
 
-    padding: 10px 18px;
+    border: 2px solid #777;
 
-    background:
+    font-size: 25px;
 
-        rgba(0,0,0,0.75);
-
-    border:
-
-        1px solid #6666ff;
-
-    border-radius: 10px;
-
-    color: #ddddff;
-
-    font-size: 13px;
-
-    pointer-events: none;
 }
 
 
-/* =====================================================
-   INTERACT BUTTON
-===================================================== */
+.professor {
 
-#interactButton {
+    left: 680px;
 
-    position: fixed;
+    top: 270px;
 
-    right: 25px;
-
-    bottom: 35px;
-
-    z-index: 450;
-
-    padding: 14px 20px;
-
-    background: #5555ff;
-
-    color: white;
-
-    border-radius: 12px;
-
-    font-weight: bold;
-
-    box-shadow:
-
-        0 5px 20px
-        rgba(0,0,0,0.4);
 }
+
+
+.student {
+
+    left: 1180px;
+
+    top: 690px;
+
+}
+
 
 
 /* =====================================================
    MOBILE CONTROLS
 ===================================================== */
 
-#mobileControls {
+.mobile-controls {
 
     position: fixed;
 
-    left: 20px;
+    z-index: 200;
 
-    bottom: 20px;
+    left: 15px;
 
-    z-index: 600;
+    right: 15px;
 
-    display: none;
+    bottom: 15px;
 
-    text-align: center;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    pointer-events: none;
+
 }
 
-.control {
 
-    width: 58px;
-    height: 58px;
+.mobile-controls > div {
 
-    margin: 3px;
+    display: flex;
 
-    border-radius: 13px;
+    align-items: center;
+
+    gap: 5px;
+
+}
+
+
+.control-button,
+.interact-button {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
 
     background:
-
-        rgba(20,20,45,0.9);
-
-    border:
-
-        1px solid #7070ff;
+        rgba(
+            30,
+            20,
+            45,
+            0.9
+        );
 
     color: white;
 
-    font-size: 20px;
+    border: 1px solid #655278;
+
+    pointer-events: auto;
+
+    touch-action: none;
+
 }
 
 
+.interact-button {
+
+    width: 55px;
+
+    height: 55px;
+
+    background: #6040a0;
+
+    font-weight: bold;
+
+}
+
+
+
 /* =====================================================
-   POPUP
+   INTERACTION
+===================================================== */
+
+.interaction-message {
+
+    position: fixed;
+
+    z-index: 150;
+
+    bottom: 95px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    padding: 9px 16px;
+
+    background:
+        rgba(
+            15,
+            10,
+            25,
+            0.95
+        );
+
+    border: 1px solid #735692;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+}
+
+
+
+/* =====================================================
+   POPUPS
 ===================================================== */
 
 .popup {
 
     position: fixed;
 
-    inset: 0;
+    z-index: 500;
 
-    z-index: 1000;
+    inset: 0;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    padding: 20px;
+    padding: 15px;
 
     background:
+        rgba(
+            0,
+            0,
+            0,
+            0.75
+        );
 
-        rgba(0,0,0,0.78);
 }
 
-.popup-box,
-.question-box,
-.dialogue-box {
 
-    width: min(95%, 620px);
+.popup-box {
+
+    position: relative;
+
+    width: min(
+        94%,
+        500px
+    );
+
+    max-height: 90vh;
+
+    overflow-y: auto;
 
     padding: 30px;
 
     text-align: center;
 
     background:
+        linear-gradient(
+            145deg,
+            #21152e,
+            #110b18
+        );
 
-        #15152d;
+    border: 1px solid #684783;
 
-    border:
-
-        2px solid #6666ff;
-
-    border-radius: 20px;
+    border-radius: 18px;
 
     box-shadow:
+        0 20px 70px
+        rgba(
+            0,
+            0,
+            0,
+            0.65
+        );
 
-        0 0 50px
-        rgba(80,80,255,0.3);
 }
+
 
 .close {
 
-    float: right;
+    position: absolute;
+
+    top: 10px;
+
+    right: 12px;
 
     width: 35px;
+
     height: 35px;
 
     border-radius: 50%;
 
-    background: #30304a;
+    background: #2b2034;
 
     color: white;
 
-    font-size: 22px;
+    font-size: 23px;
+
 }
 
-.popup-box h1 {
 
-    margin: 15px 0;
+.popup-icon {
+
+    font-size: 50px;
+
+    margin-bottom: 12px;
+
 }
+
+
+.popup-box h2 {
+
+    margin-bottom: 12px;
+
+}
+
 
 .popup-box p {
 
-    margin: 20px 0;
+    color: #c8becf;
 
     line-height: 1.6;
 
-    color: #ccccdc;
-}
-
-#challengeButton,
-#nextQuestion,
-#dialogueNext {
-
-    padding: 13px 25px;
-
-    background: #5555ff;
-
-    color: white;
-
-    border-radius: 10px;
-
-    font-weight: bold;
 }
 
 
-/* =====================================================
-   QUESTIONS
-===================================================== */
+.popup-box .main-button {
 
-.question-progress {
+    margin-top: 20px;
 
-    color: #8888cc;
-
-    font-size: 12px;
-
-    margin-bottom: 10px;
 }
 
-#questionText {
 
-    margin: 25px 0;
+.info-list {
 
-    line-height: 1.6;
-
-    font-size: 18px;
-}
-
-#answers button {
-
-    display: block;
-
-    width: 100%;
-
-    padding: 13px;
-
-    margin: 9px 0;
+    margin-top: 20px;
 
     text-align: left;
 
-    border-radius: 10px;
+    list-style: none;
 
-    background: #28284a;
+}
 
-    border:
 
-        1px solid #4f4f70;
+.info-list li {
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #33283d;
+
+    color: #d5cbdc;
+
+}
+
+
+.version {
+
+    margin-top: 20px;
+
+    font-size: 11px;
+
+    color: #8d789d !important;
+
+}
+
+
+
+/* =====================================================
+   QUIZ
+===================================================== */
+
+.quiz-label {
+
+    margin-bottom: 15px;
+
+    color: #a987ff;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+}
+
+
+.question-box h2 {
+
+    font-size: 20px;
+
+    line-height: 1.5;
+
+}
+
+
+.answers {
+
+    display: grid;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+}
+
+
+.answer-button {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border-radius: 9px;
+
+    background: #292033;
+
+    border: 1px solid #4d3d5d;
 
     color: white;
+
+    text-align: left;
+
 }
 
-#answers button:hover {
 
-    background: #3a3a68;
+.answer-button:hover {
+
+    background: #3b2d49;
+
 }
 
-#answers button:disabled {
 
-    opacity: 0.65;
-
-    cursor: default;
-}
-
-#result {
+.question-result {
 
     min-height: 30px;
 
     margin: 15px 0;
 
     font-weight: bold;
+
 }
+
 
 
 /* =====================================================
-   DIALOGUE
+   CODING ARENA
 ===================================================== */
 
-#dialogueCharacter {
+.coding-box {
 
-    font-size: 65px;
+    width: min(
+        96%,
+        950px
+    );
 
-    margin-bottom: 10px;
+    max-height: 94vh;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #151525,
+            #0b0b13
+        );
+
+    border: 2px solid #6464dc;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 0 60px
+        rgba(
+            80,
+            80,
+            255,
+            0.25
+        );
+
 }
 
-#dialogueName {
+
+.coding-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+}
+
+
+.coding-header h1 {
+
+    margin-top: 8px;
+
+    font-size: 25px;
+
+}
+
+
+.coding-badge {
+
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    background: #29295a;
+
+    color: #aaaaff;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+}
+
+
+.coding-info {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin: 15px 0;
+
+}
+
+
+.coding-info span {
+
+    padding: 7px 11px;
+
+    background: #222238;
+
+    border-radius: 7px;
+
+    color: #ccccdd;
+
+    font-size: 11px;
+
+}
+
+
+.coding-problem {
+
+    padding: 15px;
 
     margin-bottom: 15px;
+
+    background: #1b1b31;
+
+    border-left: 4px solid #6666ff;
+
+    border-radius: 8px;
+
 }
 
-#dialogueText {
 
-    min-height: 70px;
+.coding-problem h3 {
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+}
+
+
+.coding-problem p {
+
+    color: #ccccdd;
 
     line-height: 1.6;
 
-    color: #ccccdc;
+    font-size: 14px;
+
 }
 
 
+.editor-title,
+.output-title {
+
+    margin: 12px 0 6px;
+
+    color: #9999cc;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+}
+
+
+#codeEditor {
+
+    width: 100%;
+
+    height: 280px;
+
+    resize: vertical;
+
+    padding: 15px;
+
+    outline: none;
+
+    background: #07070d;
+
+    color: #eeeeff;
+
+    border: 1px solid #373752;
+
+    border-radius: 10px;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+}
+
+
+#codeEditor:focus {
+
+    border-color: #7777ff;
+
+    box-shadow:
+        0 0 15px
+        rgba(
+            100,
+            100,
+            255,
+            0.2
+        );
+
+}
+
+
+.coding-buttons {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+}
+
+
+.coding-buttons button {
+
+    flex: 1;
+
+    min-width: 110px;
+
+    padding: 11px 14px;
+
+    border-radius: 8px;
+
+    background: #3d3d92;
+
+    color: white;
+
+    font-weight: bold;
+
+}
+
+
+.coding-buttons button:hover {
+
+    background: #5555b8;
+
+}
+
+
+#codeOutput {
+
+    min-height: 80px;
+
+    max-height: 180px;
+
+    overflow: auto;
+
+    padding: 15px;
+
+    background: #050508;
+
+    border: 1px solid #303047;
+
+    border-radius: 10px;
+
+    color: #bfcfff;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    white-space: pre-wrap;
+
+}
+
+
+.code-result {
+
+    min-height: 30px;
+
+    margin-top: 12px;
+
+    line-height: 1.5;
+
+    font-weight: bold;
+
+}
+
+
+
 /* =====================================================
-   MOBILE
+   MOBILE CODING ARENA
 ===================================================== */
 
-@media (max-width: 700px) {
+@media (
+    max-width: 700px
+) {
 
-    .logo {
+    .menu-card h1 {
 
-        font-size: 40px;
+        font-size: 30px;
+
     }
 
-    .menu-box {
 
-        padding: 35px 20px;
+    .coding-box {
+
+        width: 98%;
+
+        padding: 15px;
+
     }
 
-    #mobileControls {
 
-        display: block;
+    .coding-header h1 {
+
+        font-size: 20px;
+
     }
 
-    #interactButton {
 
-        right: 20px;
+    #codeEditor {
 
-        bottom: 35px;
+        height: 220px;
 
-        padding: 12px 15px;
+        font-size: 13px;
 
-        font-size: 12px;
     }
 
-    .campus-title {
 
-        font-size: 23px;
+    .coding-buttons button {
+
+        min-width: 80px;
+
+        font-size: 10px;
+
+        padding: 10px 6px;
+
     }
+
 
     .building {
 
         width: 240px;
 
-        height: 175px;
     }
 
-    #hud {
-
-        transform: scale(0.85);
-
-        transform-origin: top left;
-    }
-
-    #status {
-
-        transform: scale(0.85);
-
-        transform-origin: top right;
-    }
 }
