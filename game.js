@@ -1,15 +1,22 @@
-/* =====================================================
+/* =========================================================
    BTECH QUEST
-   STEP 3
-   CAMPUS + PROGRAMMING ARENA
-===================================================== */
+   STEP 4 GAME ENGINE
+========================================================= */
 
 
-/* =====================================================
+/* =========================================================
+   WORLD CONFIGURATION
+========================================================= */
+
+const WORLD_WIDTH = 2200;
+const WORLD_HEIGHT = 1500;
+
+
+/* =========================================================
    GAME STATE
-===================================================== */
+========================================================= */
 
-const gameState = {
+const defaultGameState = {
 
     level: 1,
 
@@ -18,618 +25,524 @@ const gameState = {
     coins: 100,
 
     player: {
-
-        x: 500,
-
-        y: 430,
-
+        x: 1050,
+        y: 370,
         speed: 5
-
     },
 
-    keys: {},
+    completedSubjects: [],
 
-    currentSubject: null,
+    completedCoding: [],
 
-    currentQuestionIndex: 0,
+    totalQuestionsAnswered: 0,
 
-    currentQuestions: [],
-
-    codingIndex: 0
-
+    correctAnswers: 0
 };
 
 
+let gameState = loadProgress();
 
-/* =====================================================
-   SUBJECT DATA
-===================================================== */
+
+/* =========================================================
+   BUILDING DATA
+========================================================= */
 
 const buildingData = {
 
     programming: {
-
         icon: "💻",
-
-        title: "CODING LAB",
-
+        title: "Programming Arena",
         description:
-            "Master C, C++, Java and Python through programming challenges."
-
+            "Practice Python, C, C++ and Java through coding challenges.",
+        type: "coding"
     },
-
 
     dsa: {
-
         icon: "🧠",
-
-        title: "DSA DUNGEON",
-
+        title: "DSA Dungeon",
         description:
-            "Learn arrays, linked lists, stacks, queues, trees, graphs and algorithms."
-
+            "Master Arrays, Strings, Stack, Queue, Trees, Graphs and Algorithms.",
+        type: "quiz"
     },
-
 
     dbms: {
-
         icon: "🗄️",
-
-        title: "DB LAB",
-
+        title: "DB Lab",
         description:
-            "Practice DBMS concepts, SQL, normalization and database design."
-
+            "Learn DBMS, SQL, Keys, Normalization and Transactions.",
+        type: "quiz"
     },
-
 
     networks: {
-
         icon: "🌐",
-
-        title: "NETWORK LAB",
-
+        title: "Network Lab",
         description:
-            "Learn computer networks, protocols, OSI model and TCP/IP."
-
+            "Learn OSI, TCP/IP, IP addressing, protocols and networking.",
+        type: "quiz"
     },
-
 
     os: {
-
         icon: "🖥️",
-
-        title: "OS LAB",
-
+        title: "Operating Systems Lab",
         description:
-            "Explore processes, memory management, scheduling and operating systems."
-
+            "Study processes, scheduling, memory, deadlocks and file systems.",
+        type: "quiz"
     },
-
 
     ai: {
-
         icon: "🤖",
-
-        title: "AI LAB",
-
+        title: "AI / ML Lab",
         description:
-            "Learn artificial intelligence, machine learning and intelligent systems."
-
+            "Learn Artificial Intelligence and Machine Learning concepts.",
+        type: "quiz"
     },
 
+    cybersecurity: {
+        icon: "🔐",
+        title: "Cybersecurity Lab",
+        description:
+            "Learn phishing awareness, passwords, authentication and security.",
+        type: "quiz"
+    },
+
+    cloud: {
+        icon: "☁️",
+        title: "Cloud Computing Center",
+        description:
+            "Learn IaaS, PaaS, SaaS, cloud deployment and scalability.",
+        type: "quiz"
+    },
+
+    mathematics: {
+        icon: "📐",
+        title: "Engineering Mathematics",
+        description:
+            "Practice calculus, probability, matrices and mathematics.",
+        type: "quiz"
+    },
+
+    aptitude: {
+        icon: "🧮",
+        title: "Aptitude Center",
+        description:
+            "Practice quantitative aptitude and logical reasoning.",
+        type: "quiz"
+    },
 
     library: {
-
         icon: "📚",
-
-        title: "DIGITAL LIBRARY",
-
+        title: "Digital Library",
         description:
-            "Read B.Tech notes, concepts and learning resources."
-
+            "Browse B.Tech study topics and learning resources.",
+        type: "info"
     },
-
 
     placement: {
-
-        icon: "🏢",
-
-        title: "PLACEMENT CELL",
-
+        icon: "💼",
+        title: "Placement Cell",
         description:
-            "Practice aptitude, technical interviews, HR interviews and placement preparation."
-
+            "Prepare for technical and HR interviews.",
+        type: "quiz"
     },
 
-
     cafeteria: {
-
         icon: "🍔",
-
-        title: "CAFETERIA",
-
+        title: "Cafeteria",
         description:
-            "Take a short break before your next mission."
-
+            "Take a break before your next mission.",
+        type: "dialogue"
     }
-
 };
 
 
-
-/* =====================================================
-   QUESTION BANK
-===================================================== */
-
-const questionBank = {
-
-    dsa: [
-
-        {
-
-            question:
-                "Which data structure follows LIFO?",
-
-            answers: [
-                "Queue",
-                "Stack",
-                "Array",
-                "Graph"
-            ],
-
-            correct: 1,
-
-            xp: 100
-
-        },
-
-        {
-
-            question:
-                "Which data structure follows FIFO?",
-
-            answers: [
-                "Stack",
-                "Tree",
-                "Queue",
-                "Graph"
-            ],
-
-            correct: 2,
-
-            xp: 100
-
-        }
-
-    ],
-
-
-    dbms: [
-
-        {
-
-            question:
-                "Which language is commonly used to query relational databases?",
-
-            answers: [
-                "HTML",
-                "SQL",
-                "CSS",
-                "XML"
-            ],
-
-            correct: 1,
-
-            xp: 100
-
-        }
-
-    ],
-
-
-    networks: [
-
-        {
-
-            question:
-                "How many layers are in the OSI model?",
-
-            answers: [
-                "5",
-                "6",
-                "7",
-                "8"
-            ],
-
-            correct: 2,
-
-            xp: 100
-
-        }
-
-    ],
-
-
-    os: [
-
-        {
-
-            question:
-                "Which scheduling algorithm gives each process a time slice?",
-
-            answers: [
-                "FCFS",
-                "Round Robin",
-                "Priority",
-                "SJF"
-            ],
-
-            correct: 1,
-
-            xp: 100
-
-        }
-
-    ],
-
-
-    ai: [
-
-        {
-
-            question:
-                "What does ML stand for?",
-
-            answers: [
-
-                "Machine Learning",
-
-                "Memory Logic",
-
-                "Machine Language",
-
-                "Model Logic"
-
-            ],
-
-            correct: 0,
-
-            xp: 100
-
-        }
-
-    ],
-
-
-    placement: [
-
-        {
-
-            question:
-                "Which data structure is commonly used for BFS?",
-
-            answers: [
-                "Stack",
-                "Queue",
-                "Heap",
-                "Tree"
-            ],
-
-            correct: 1,
-
-            xp: 100
-
-        }
-
-    ]
-
-};
-
-
-
-/* =====================================================
+/* =========================================================
    DOM
-===================================================== */
+========================================================= */
 
 const mainMenu =
-    document.getElementById(
-        "mainMenu"
-    );
+    document.getElementById("mainMenu");
 
 const gameScreen =
-    document.getElementById(
-        "gameScreen"
-    );
+    document.getElementById("gameScreen");
 
 const world =
-    document.getElementById(
-        "world"
-    );
+    document.getElementById("world");
 
 const player =
-    document.getElementById(
-        "player"
-    );
-
-const playerLevel =
-    document.getElementById(
-        "playerLevel"
-    );
-
-const playerXP =
-    document.getElementById(
-        "playerXP"
-    );
-
-const playerCoins =
-    document.getElementById(
-        "playerCoins"
-    );
-
-const interactionMessage =
-    document.getElementById(
-        "interactionMessage"
-    );
+    document.getElementById("player");
 
 
+const levelText =
+    document.getElementById("levelText");
 
-/* =====================================================
-   POPUPS
-===================================================== */
+const xpText =
+    document.getElementById("xpText");
+
+const coinsText =
+    document.getElementById("coinsText");
+
+const completedText =
+    document.getElementById("completedText");
+
+
+const interactionBox =
+    document.getElementById("interactionBox");
+
+const interactionText =
+    document.getElementById("interactionText");
+
+const interactionBtn =
+    document.getElementById("interactionBtn");
+
 
 const subjectPopup =
-    document.getElementById(
-        "subjectPopup"
-    );
+    document.getElementById("subjectPopup");
+
+const subjectIcon =
+    document.getElementById("subjectIcon");
+
+const subjectTitle =
+    document.getElementById("subjectTitle");
+
+const subjectDescription =
+    document.getElementById("subjectDescription");
+
+const startSubjectBtn =
+    document.getElementById("startSubjectBtn");
+
+const subjectInfoBtn =
+    document.getElementById("subjectInfoBtn");
+
 
 const questionPopup =
-    document.getElementById(
-        "questionPopup"
-    );
+    document.getElementById("questionPopup");
+
+const quizSubject =
+    document.getElementById("quizSubject");
+
+const questionProgress =
+    document.getElementById("questionProgress");
+
+const questionText =
+    document.getElementById("questionText");
+
+const answers =
+    document.getElementById("answers");
+
+const quizFeedback =
+    document.getElementById("quizFeedback");
+
+const nextQuestionBtn =
+    document.getElementById("nextQuestionBtn");
+
 
 const dialoguePopup =
-    document.getElementById(
-        "dialoguePopup"
-    );
+    document.getElementById("dialoguePopup");
 
-const howToPopup =
-    document.getElementById(
-        "howToPopup"
-    );
+const dialogueName =
+    document.getElementById("dialogueName");
 
-const aboutPopup =
-    document.getElementById(
-        "aboutPopup"
-    );
+const dialogueText =
+    document.getElementById("dialogueText");
+
+const dialogueOkBtn =
+    document.getElementById("dialogueOkBtn");
 
 
+const codingArenaPopup =
+    document.getElementById("codingArenaPopup");
 
-/* =====================================================
+const codingChallengeTitle =
+    document.getElementById("codingChallengeTitle");
+
+const codingLanguage =
+    document.getElementById("codingLanguage");
+
+const codingDifficulty =
+    document.getElementById("codingDifficulty");
+
+const codingDescription =
+    document.getElementById("codingDescription");
+
+const expectedOutput =
+    document.getElementById("expectedOutput");
+
+const codeEditor =
+    document.getElementById("codeEditor");
+
+const codeResult =
+    document.getElementById("codeResult");
+
+const hintBox =
+    document.getElementById("hintBox");
+
+const hintText =
+    document.getElementById("hintText");
+
+const runCodeBtn =
+    document.getElementById("runCodeBtn");
+
+const hintBtn =
+    document.getElementById("hintBtn");
+
+const resetCodeBtn =
+    document.getElementById("resetCodeBtn");
+
+const nextCodingBtn =
+    document.getElementById("nextCodingBtn");
+
+const finishCodingBtn =
+    document.getElementById("finishCodingBtn");
+
+
+const infoPopup =
+    document.getElementById("infoPopup");
+
+const infoTitle =
+    document.getElementById("infoTitle");
+
+const infoContent =
+    document.getElementById("infoContent");
+
+
+/* =========================================================
+   GAME VARIABLES
+========================================================= */
+
+const keys = {};
+
+let currentSubject = null;
+
+let currentQuestions = [];
+
+let currentQuestionIndex = 0;
+
+let currentQuestionAnswered = false;
+
+let currentCodingIndex = 0;
+
+let hintIndex = 0;
+
+let nearestBuilding = null;
+
+
+/* =========================================================
    START GAME
-===================================================== */
+========================================================= */
 
 document
-    .getElementById(
-        "startGameButton"
-    )
-    .addEventListener(
-        "click",
-        startGame
-    );
+    .getElementById("startBtn")
+    .addEventListener("click", startGame);
+
+
+document
+    .getElementById("howToBtn")
+    .addEventListener("click", () => {
+        openPopup("howToPopup");
+    });
+
+
+document
+    .getElementById("aboutBtn")
+    .addEventListener("click", () => {
+        openPopup("aboutPopup");
+    });
 
 
 function startGame() {
 
-    mainMenu.classList.add(
-        "hidden"
-    );
+    mainMenu.classList.remove("active");
 
-    gameScreen.classList.remove(
-        "hidden"
-    );
+    gameScreen.classList.add("active");
+
+    loadPlayerPosition();
 
     updateHUD();
 
-    updateCamera();
+    centerCamera();
+
+    startGameLoop();
 
 }
 
 
-
-/* =====================================================
-   MENU BUTTON
-===================================================== */
-
-document
-    .getElementById(
-        "menuButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            gameScreen.classList.add(
-                "hidden"
-            );
-
-            mainMenu.classList.remove(
-                "hidden"
-            );
-
-        }
-    );
-
-
-
-/* =====================================================
-   HOW TO PLAY
-===================================================== */
-
-document
-    .getElementById(
-        "howToButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            howToPopup.classList.remove(
-                "hidden"
-            );
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "closeHowTo"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            howToPopup.classList.add(
-                "hidden"
-            );
-
-        }
-    );
-
-
-
-/* =====================================================
-   ABOUT
-===================================================== */
-
-document
-    .getElementById(
-        "aboutButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            aboutPopup.classList.remove(
-                "hidden"
-            );
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "closeAbout"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            aboutPopup.classList.add(
-                "hidden"
-            );
-
-        }
-    );
-
-
-
-/* =====================================================
+/* =========================================================
    KEYBOARD
-===================================================== */
+========================================================= */
 
-document.addEventListener(
-    "keydown",
-    (event) => {
+window.addEventListener("keydown", event => {
 
-        gameState.keys[
-            event.key.toLowerCase()
-        ] = true;
+    keys[event.key.toLowerCase()] = true;
 
+    keys[event.key] = true;
+
+    if (
+        event.key === "e" ||
+        event.key === "E"
+    ) {
 
         if (
-            event.key.toLowerCase() === "e"
+            !isAnyPopupOpen() &&
+            nearestBuilding
         ) {
 
-            interact();
+            interactWithBuilding();
 
         }
 
     }
+
+});
+
+
+window.addEventListener("keyup", event => {
+
+    keys[event.key.toLowerCase()] = false;
+
+    keys[event.key] = false;
+
+});
+
+
+/* =========================================================
+   MOBILE CONTROLS
+========================================================= */
+
+document
+    .querySelectorAll("#mobileControls button")
+    .forEach(button => {
+
+        const key =
+            button.dataset.key;
+
+        button.addEventListener(
+            "touchstart",
+            event => {
+
+                event.preventDefault();
+
+                keys[key] = true;
+
+            }
+        );
+
+        button.addEventListener(
+            "touchend",
+            event => {
+
+                event.preventDefault();
+
+                keys[key] = false;
+
+            }
+        );
+
+        button.addEventListener(
+            "mousedown",
+            () => {
+
+                keys[key] = true;
+
+            }
+        );
+
+        button.addEventListener(
+            "mouseup",
+            () => {
+
+                keys[key] = false;
+
+            }
+        );
+
+    });
+
+
+interactionBtn.addEventListener(
+    "click",
+    interactWithBuilding
 );
 
 
-document.addEventListener(
-    "keyup",
-    (event) => {
+/* =========================================================
+   GAME LOOP
+========================================================= */
 
-        gameState.keys[
-            event.key.toLowerCase()
-        ] = false;
+let gameLoopStarted = false;
 
+
+function startGameLoop() {
+
+    if (gameLoopStarted) {
+        return;
     }
-);
+
+    gameLoopStarted = true;
+
+    requestAnimationFrame(gameLoop);
+
+}
 
 
+function gameLoop() {
 
-/* =====================================================
-   MOVEMENT
-===================================================== */
+    updatePlayer();
+
+    updateCamera();
+
+    updateNearbyBuilding();
+
+    requestAnimationFrame(gameLoop);
+
+}
+
+
+/* =========================================================
+   PLAYER MOVEMENT
+========================================================= */
 
 function updatePlayer() {
 
     if (
-        gameScreen.classList.contains(
-            "hidden"
-        )
-    )
+        isAnyPopupOpen()
+    ) {
         return;
+    }
 
 
     let dx = 0;
-
     let dy = 0;
 
 
     if (
-        gameState.keys["w"] ||
-        gameState.keys["arrowup"]
+        keys["w"] ||
+        keys["ArrowUp"]
     ) {
-
         dy -= 1;
-
     }
 
 
     if (
-        gameState.keys["s"] ||
-        gameState.keys["arrowdown"]
+        keys["s"] ||
+        keys["ArrowDown"]
     ) {
-
         dy += 1;
-
     }
 
 
     if (
-        gameState.keys["a"] ||
-        gameState.keys["arrowleft"]
+        keys["a"] ||
+        keys["ArrowLeft"]
     ) {
-
         dx -= 1;
-
     }
 
 
     if (
-        gameState.keys["d"] ||
-        gameState.keys["arrowright"]
+        keys["d"] ||
+        keys["ArrowRight"]
     ) {
-
         dx += 1;
-
     }
 
 
@@ -644,9 +557,7 @@ function updatePlayer() {
                 dy * dy
             );
 
-
         dx /= length;
-
         dy /= length;
 
 
@@ -654,110 +565,95 @@ function updatePlayer() {
             dx *
             gameState.player.speed;
 
-
         gameState.player.y +=
             dy *
             gameState.player.speed;
 
+
+        gameState.player.x =
+            Math.max(
+                0,
+                Math.min(
+                    WORLD_WIDTH - 55,
+                    gameState.player.x
+                )
+            );
+
+
+        gameState.player.y =
+            Math.max(
+                80,
+                Math.min(
+                    WORLD_HEIGHT - 80,
+                    gameState.player.y
+                )
+            );
+
+
+        renderPlayer();
+
     }
 
-
-    /* WORLD LIMITS */
-
-    gameState.player.x =
-        Math.max(
-            20,
-            Math.min(
-                1730,
-                gameState.player.x
-            )
-        );
+}
 
 
-    gameState.player.y =
-        Math.max(
-            20,
-            Math.min(
-                1130,
-                gameState.player.y
-            )
-        );
+/* =========================================================
+   RENDER PLAYER
+========================================================= */
 
+function renderPlayer() {
 
     player.style.left =
-        gameState.player.x +
-        "px";
-
+        `${gameState.player.x}px`;
 
     player.style.top =
-        gameState.player.y +
-        "px";
+        `${gameState.player.y}px`;
 
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+function centerCamera() {
 
     updateCamera();
 
-    checkNearby();
-
 }
 
-
-
-/* =====================================================
-   GAME LOOP
-===================================================== */
-
-function gameLoop() {
-
-    updatePlayer();
-
-    requestAnimationFrame(
-        gameLoop
-    );
-
-}
-
-
-gameLoop();
-
-
-
-/* =====================================================
-   CAMERA
-===================================================== */
 
 function updateCamera() {
 
-    const screenWidth =
-        window.innerWidth;
+    const viewport =
+        document.getElementById(
+            "gameViewport"
+        );
 
-    const screenHeight =
-        window.innerHeight;
+
+    const viewportWidth =
+        viewport.clientWidth;
+
+    const viewportHeight =
+        viewport.clientHeight;
 
 
     let cameraX =
         gameState.player.x -
-        screenWidth / 2;
+        viewportWidth / 2;
+
 
     let cameraY =
         gameState.player.y -
-        screenHeight / 2;
-
-
-    const maxX =
-        1800 -
-        screenWidth;
-
-
-    const maxY =
-        1200 -
-        screenHeight;
+        viewportHeight / 2;
 
 
     cameraX =
         Math.max(
             0,
             Math.min(
-                maxX,
+                WORLD_WIDTH -
+                viewportWidth,
                 cameraX
             )
         );
@@ -767,7 +663,8 @@ function updateCamera() {
         Math.max(
             0,
             Math.min(
-                maxY,
+                WORLD_HEIGHT -
+                viewportHeight,
                 cameraY
             )
         );
@@ -779,458 +676,525 @@ function updateCamera() {
 }
 
 
+/* =========================================================
+   NEAREST BUILDING
+========================================================= */
 
-/* =====================================================
-   BUILDING DETECTION
-===================================================== */
-
-let nearbyBuilding = null;
-
-
-function checkNearby() {
+function updateNearbyBuilding() {
 
     const buildings =
         document.querySelectorAll(
-            ".building"
+            ".building[data-subject]"
         );
 
 
-    nearbyBuilding = null;
+    let closest = null;
+
+    let closestDistance = Infinity;
 
 
-    buildings.forEach(
-        building => {
+    buildings.forEach(building => {
 
-            building.classList.remove(
-                "nearby"
+        const rect = {
+            x: parseFloat(building.style.left),
+            y: parseFloat(building.style.top)
+        };
+
+
+        const centerX =
+            rect.x +
+            building.offsetWidth / 2;
+
+
+        const centerY =
+            rect.y +
+            building.offsetHeight / 2;
+
+
+        const playerCenterX =
+            gameState.player.x +
+            27;
+
+
+        const playerCenterY =
+            gameState.player.y +
+            35;
+
+
+        const distance =
+            Math.sqrt(
+                Math.pow(
+                    centerX -
+                    playerCenterX,
+                    2
+                ) +
+                Math.pow(
+                    centerY -
+                    playerCenterY,
+                    2
+                )
             );
 
 
-            const rect =
-                {
-
-                    left:
-                        parseFloat(
-                            building.style.left ||
-                            getComputedStyle(
-                                building
-                            ).left
-                        ),
-
-                    top:
-                        parseFloat(
-                            building.style.top ||
-                            getComputedStyle(
-                                building
-                            ).top
-                        ),
-
-                    width:
-                        building.offsetWidth,
-
-                    height:
-                        building.offsetHeight
-
-                };
+        building.classList.remove(
+            "nearby"
+        );
 
 
-            const centerX =
-                rect.left +
-                rect.width / 2;
+        if (
+            distance < 230 &&
+            distance < closestDistance
+        ) {
 
-            const centerY =
-                rect.top +
-                rect.height / 2;
+            closestDistance = distance;
 
-
-            const distance =
-                Math.sqrt(
-
-                    Math.pow(
-                        gameState.player.x -
-                        centerX,
-                        2
-                    )
-
-                    +
-
-                    Math.pow(
-                        gameState.player.y -
-                        centerY,
-                        2
-                    )
-
-                );
-
-
-            if (
-                distance < 190 &&
-                !nearbyBuilding
-            ) {
-
-                nearbyBuilding =
-                    building;
-
-                building.classList.add(
-                    "nearby"
-                );
-
-            }
+            closest = building;
 
         }
-    );
+
+    });
 
 
-    if (nearbyBuilding) {
-
-        interactionMessage.textContent =
-            "Press E to enter " +
-            nearbyBuilding.querySelector(
-                "h2"
-            ).textContent;
+    nearestBuilding = closest;
 
 
-        interactionMessage.classList.remove(
-            "hidden"
+    if (nearestBuilding) {
+
+        nearestBuilding.classList.add(
+            "nearby"
         );
+
+
+        const subject =
+            nearestBuilding.dataset.subject;
+
+
+        const data =
+            buildingData[subject];
+
+
+        if (
+            isSubjectCompleted(subject)
+        ) {
+
+            interactionText.textContent =
+                `${data.icon} ${data.title} — COMPLETED`;
+
+        } else {
+
+            interactionText.textContent =
+                `${data.icon} ${data.title} — Press E`;
+
+        }
 
     } else {
 
-        interactionMessage.classList.add(
-            "hidden"
-        );
+        interactionText.textContent =
+            "Explore the campus";
 
     }
 
 }
 
 
+/* =========================================================
+   BUILDING INTERACTION
+========================================================= */
 
-/* =====================================================
-   INTERACT
-===================================================== */
+function interactWithBuilding() {
 
-function interact() {
-
-    if (!nearbyBuilding)
+    if (!nearestBuilding) {
         return;
+    }
 
 
     const subject =
-        nearbyBuilding.dataset.subject;
+        nearestBuilding.dataset.subject;
 
 
-    openSubject(
-        subject
-    );
+    openSubject(subject);
 
 }
 
 
+/* =========================================================
+   OPEN SUBJECT
+========================================================= */
 
-/* =====================================================
-   MOBILE CONTROLS
-===================================================== */
+function openSubject(subject) {
 
-function holdKey(
-    key
-) {
-
-    gameState.keys[key] = true;
-
-}
-
-
-function releaseKey(
-    key
-) {
-
-    gameState.keys[key] = false;
-
-}
-
-
-function setupControl(
-    id,
-    key
-) {
-
-    const button =
-        document.getElementById(
-            id
-        );
-
-
-    if (!button)
-        return;
-
-
-    button.addEventListener(
-        "pointerdown",
-        event => {
-
-            event.preventDefault();
-
-            holdKey(key);
-
-        }
-    );
-
-
-    button.addEventListener(
-        "pointerup",
-        event => {
-
-            event.preventDefault();
-
-            releaseKey(key);
-
-        }
-    );
-
-
-    button.addEventListener(
-        "pointerleave",
-        () => {
-
-            releaseKey(key);
-
-        }
-    );
-
-
-    button.addEventListener(
-        "pointercancel",
-        () => {
-
-            releaseKey(key);
-
-        }
-    );
-
-}
-
-
-setupControl(
-    "upButton",
-    "w"
-);
-
-setupControl(
-    "downButton",
-    "s"
-);
-
-setupControl(
-    "leftButton",
-    "a"
-);
-
-setupControl(
-    "rightButton",
-    "d"
-);
-
-
-document
-    .getElementById(
-        "interactButton"
-    )
-    .addEventListener(
-        "click",
-        interact
-    );
-
-
-
-/* =====================================================
-   SUBJECT POPUP
-===================================================== */
-
-function openSubject(
-    subject
-) {
-
-    gameState.currentSubject =
-        subject;
+    currentSubject = subject;
 
 
     const data =
         buildingData[subject];
 
 
-    if (!data)
+    if (!data) {
         return;
+    }
 
 
-    document.getElementById(
-        "subjectIcon"
-    ).textContent =
+    subjectIcon.textContent =
         data.icon;
 
 
-    document.getElementById(
-        "subjectTitle"
-    ).textContent =
+    subjectTitle.textContent =
         data.title;
 
 
-    document.getElementById(
-        "subjectDescription"
-    ).textContent =
+    subjectDescription.textContent =
         data.description;
 
 
-    const button =
-        document.getElementById(
-            "challengeButton"
-        );
-
-
     if (
-        subject ===
-        "programming"
+        isSubjectCompleted(subject)
     ) {
 
-        button.textContent =
-            "💻 OPEN PROGRAMMING ARENA";
-
-    } else if (
-        questionBank[subject]
-    ) {
-
-        button.textContent =
-            "🎯 START CHALLENGE";
+        startSubjectBtn.textContent =
+            "🔄 PLAY AGAIN";
 
     } else {
 
-        button.textContent =
-            "📚 EXPLORE";
+        startSubjectBtn.textContent =
+            "🚀 START MISSION";
 
     }
 
 
-    subjectPopup.classList.remove(
-        "hidden"
+    openPopup(
+        "subjectPopup"
     );
 
 }
 
 
+/* =========================================================
+   START SUBJECT
+========================================================= */
 
-document
-    .getElementById(
-        "closeSubjectPopup"
-    )
-    .addEventListener(
-        "click",
-        () => {
+startSubjectBtn.addEventListener(
+    "click",
+    () => {
 
-            subjectPopup.classList.add(
-                "hidden"
+        closePopup("subjectPopup");
+
+
+        if (!currentSubject) {
+            return;
+        }
+
+
+        const data =
+            buildingData[
+                currentSubject
+            ];
+
+
+        if (
+            data.type === "coding"
+        ) {
+
+            openCodingArena();
+
+            return;
+
+        }
+
+
+        if (
+            data.type === "quiz"
+        ) {
+
+            startQuiz(
+                currentSubject
+            );
+
+            return;
+
+        }
+
+
+        if (
+            data.type === "info"
+        ) {
+
+            showLibraryInfo();
+
+            return;
+
+        }
+
+
+        if (
+            data.type === "dialogue"
+        ) {
+
+            showDialogue(
+                "Cafeteria",
+                "🍔",
+                "Take a short break! Your B.Tech journey is just beginning. Keep learning and keep going."
             );
 
         }
-    );
+
+    }
+);
 
 
+/* =========================================================
+   SUBJECT INFO
+========================================================= */
 
-/* =====================================================
-   START CHALLENGE
-===================================================== */
+subjectInfoBtn.addEventListener(
+    "click",
+    () => {
 
-document
-    .getElementById(
-        "challengeButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            const subject =
-                gameState.currentSubject;
-
-
-            subjectPopup.classList.add(
-                "hidden"
-            );
-
-
-            if (
-                subject ===
-                "programming"
-            ) {
-
-                openCodingArena();
-
-                return;
-
-            }
-
-
-            if (
-                questionBank[subject]
-            ) {
-
-                startQuiz(
-                    subject
-                );
-
-            } else {
-
-                openDialogue(
-                    "BTECH QUEST",
-                    "More learning content will be added in the next stage."
-
-                );
-
-            }
-
+        if (!currentSubject) {
+            return;
         }
-    );
 
 
+        showSubjectInfo(
+            currentSubject
+        );
 
-/* =====================================================
+    }
+);
+
+
+function showSubjectInfo(subject) {
+
+    const data =
+        buildingData[subject];
+
+
+    closePopup("subjectPopup");
+
+
+    infoTitle.textContent =
+        `${data.icon} ${data.title}`;
+
+
+    const descriptions = {
+
+        programming: `
+            <div class="info-section">
+                <strong>Programming</strong>
+                <p>Learn Python, C, C++ and Java.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>Variables, conditions, loops, functions, arrays and problem solving.</p>
+            </div>
+        `,
+
+        dsa: `
+            <div class="info-section">
+                <strong>DSA</strong>
+                <p>Learn how data structures and algorithms solve computational problems.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>Arrays, Strings, Stack, Queue, Linked List, Trees, Graphs and Sorting.</p>
+            </div>
+        `,
+
+        dbms: `
+            <div class="info-section">
+                <strong>DBMS</strong>
+                <p>Learn how databases store and manage information.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>SQL, Keys, Normalization, Transactions and Database Design.</p>
+            </div>
+        `,
+
+        networks: `
+            <div class="info-section">
+                <strong>Computer Networks</strong>
+                <p>Understand communication between computers.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>OSI, TCP/IP, IP Addressing, HTTP, TCP, UDP and Network Devices.</p>
+            </div>
+        `,
+
+        os: `
+            <div class="info-section">
+                <strong>Operating Systems</strong>
+                <p>Learn how operating systems manage computer resources.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>Processes, Threads, Scheduling, Memory, Deadlocks and File Systems.</p>
+            </div>
+        `,
+
+        ai: `
+            <div class="info-section">
+                <strong>AI / ML</strong>
+                <p>Learn the fundamentals of Artificial Intelligence and Machine Learning.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>AI, ML, Supervised Learning, Classification and Model Training.</p>
+            </div>
+        `,
+
+        cybersecurity: `
+            <div class="info-section">
+                <strong>Cybersecurity</strong>
+                <p>Learn how to protect systems, accounts and data.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>Phishing, Password Security, MFA, Malware and Safe Internet Usage.</p>
+            </div>
+        `,
+
+        cloud: `
+            <div class="info-section">
+                <strong>Cloud Computing</strong>
+                <p>Learn how computing resources can be delivered through cloud platforms.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>IaaS, PaaS, SaaS, Public Cloud, Private Cloud and Scalability.</p>
+            </div>
+        `,
+
+        mathematics: `
+            <div class="info-section">
+                <strong>Engineering Mathematics</strong>
+                <p>Strengthen mathematical concepts required for engineering.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>Calculus, Matrices, Probability and Statistics.</p>
+            </div>
+        `,
+
+        aptitude: `
+            <div class="info-section">
+                <strong>Aptitude</strong>
+                <p>Prepare for placement aptitude tests.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>Percentages, Averages, Number Series, Logical Reasoning and Quantitative Problems.</p>
+            </div>
+        `,
+
+        placement: `
+            <div class="info-section">
+                <strong>Placement Preparation</strong>
+                <p>Prepare for technical and HR interviews.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Topics</strong>
+                <p>DSA, Programming, Communication, Problem Solving and HR Questions.</p>
+            </div>
+        `,
+
+        library: `
+            <div class="info-section">
+                <strong>Digital Library</strong>
+                <p>Your future learning center.</p>
+            </div>
+
+            <div class="info-section">
+                <strong>Coming Features</strong>
+                <p>PDF notes, topic lessons, videos, cheat sheets and previous questions.</p>
+            </div>
+        `,
+
+        cafeteria: `
+            <div class="info-section">
+                <strong>🍔 Cafeteria</strong>
+                <p>Take a break and return to your missions.</p>
+            </div>
+        `
+    };
+
+
+    infoContent.innerHTML =
+        descriptions[subject] ||
+        "<p>Information coming soon.</p>";
+
+
+    openPopup("infoPopup");
+
+}
+
+
+/* =========================================================
    QUIZ
-===================================================== */
+========================================================= */
 
-function startQuiz(
-    subject
-) {
+function startQuiz(subject) {
 
-    gameState.currentQuestions =
-        questionBank[subject] || [];
+    currentSubject = subject;
 
+    currentQuestions =
+        subjectQuestions[subject] || [];
 
-    gameState.currentQuestionIndex =
-        0;
+    currentQuestionIndex = 0;
+
+    currentQuestionAnswered = false;
 
 
     if (
-        gameState.currentQuestions.length === 0
+        currentQuestions.length === 0
     ) {
+
+        showDialogue(
+            "Professor",
+            "👨‍🏫",
+            "Questions for this subject are coming soon."
+        );
 
         return;
 
     }
+
+
+    quizSubject.textContent =
+        buildingData[subject].title;
+
+
+    openPopup(
+        "questionPopup"
+    );
 
 
     showQuestion();
 
-    questionPopup.classList.remove(
-        "hidden"
-    );
-
 }
 
 
+/* =========================================================
+   SHOW QUESTION
+========================================================= */
 
 function showQuestion() {
 
     const question =
-        gameState.currentQuestions[
-            gameState.currentQuestionIndex
+        currentQuestions[
+            currentQuestionIndex
         ];
 
 
@@ -1243,26 +1207,32 @@ function showQuestion() {
     }
 
 
-    document.getElementById(
-        "questionText"
-    ).textContent =
+    currentQuestionAnswered =
+        false;
+
+
+    questionProgress.textContent =
+        `Question ${
+            currentQuestionIndex + 1
+        } / ${
+            currentQuestions.length
+        }`;
+
+
+    questionText.textContent =
         question.question;
-
-
-    const answers =
-        document.getElementById(
-            "answers"
-        );
 
 
     answers.innerHTML = "";
 
+    quizFeedback.textContent = "";
 
-    question.answers.forEach(
-        (
-            answer,
-            index
-        ) => {
+    nextQuestionBtn.style.display =
+        "none";
+
+
+    question.options.forEach(
+        (option, index) => {
 
             const button =
                 document.createElement(
@@ -1271,19 +1241,20 @@ function showQuestion() {
 
 
             button.className =
-                "answer-button";
+                "answer-btn";
 
 
             button.textContent =
-                answer;
+                `${String.fromCharCode(65 + index)}. ${option}`;
 
 
             button.addEventListener(
                 "click",
                 () => {
 
-                    answerQuestion(
-                        index
+                    checkAnswer(
+                        index,
+                        button
                     );
 
                 }
@@ -1297,375 +1268,277 @@ function showQuestion() {
         }
     );
 
-
-    document.getElementById(
-        "questionResult"
-    ).textContent =
-        "";
-
-
-    document
-        .getElementById(
-            "nextQuestionButton"
-        )
-        .classList.add(
-            "hidden"
-        );
-
 }
 
 
+/* =========================================================
+   CHECK ANSWER
+========================================================= */
 
-function answerQuestion(
-    selected
+function checkAnswer(
+    selectedIndex,
+    selectedButton
 ) {
 
+    if (
+        currentQuestionAnswered
+    ) {
+        return;
+    }
+
+
+    currentQuestionAnswered =
+        true;
+
+
     const question =
-        gameState.currentQuestions[
-            gameState.currentQuestionIndex
+        currentQuestions[
+            currentQuestionIndex
         ];
 
 
-    const result =
-        document.getElementById(
-            "questionResult"
-        );
+    gameState.totalQuestionsAnswered++;
 
 
     const buttons =
         document.querySelectorAll(
-            ".answer-button"
+            ".answer-btn"
         );
 
 
     buttons.forEach(
-        button => {
+        (button, index) => {
 
-            button.disabled =
-                true;
+            if (
+                index ===
+                question.answer
+            ) {
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
 
         }
     );
 
 
     if (
-        selected ===
-        question.correct
+        selectedIndex ===
+        question.answer
     ) {
 
-        result.textContent =
-            "✅ Correct! +" +
-            question.xp +
-            " XP";
-
-
-        result.style.color =
-            "#66ff99";
-
-
-        addXP(
-            question.xp
+        selectedButton.classList.add(
+            "correct"
         );
 
-        gameState.coins += 15;
 
-        updateHUD();
+        gameState.correctAnswers++;
 
+
+        const rewardXP = 50;
+
+        const rewardCoins = 10;
+
+
+        addXP(rewardXP);
+
+        addCoins(rewardCoins);
+
+
+        quizFeedback.innerHTML =
+            `✅ Correct! +${rewardXP} XP +${rewardCoins} 🪙<br><small>${question.explanation}</small>`;
 
     } else {
 
-        result.textContent =
-            "❌ Incorrect. Try to understand the concept and continue.";
+        selectedButton.classList.add(
+            "wrong"
+        );
 
 
-        result.style.color =
-            "#ff7777";
+        quizFeedback.innerHTML =
+            `❌ Wrong answer.<br><small>${question.explanation}</small>`;
 
     }
 
 
-    document
-        .getElementById(
-            "nextQuestionButton"
-        )
-        .classList.remove(
-            "hidden"
-        );
+    if (
+        currentQuestionIndex <
+        currentQuestions.length - 1
+    ) {
+
+        nextQuestionBtn.style.display =
+            "block";
+
+    } else {
+
+        nextQuestionBtn.textContent =
+            "🏆 COMPLETE";
+
+        nextQuestionBtn.style.display =
+            "block";
+
+    }
+
+
+    saveProgress();
 
 }
 
 
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
 
-document
-    .getElementById(
-        "nextQuestionButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
+nextQuestionBtn.addEventListener(
+    "click",
+    () => {
 
-            gameState.currentQuestionIndex++;
+        currentQuestionIndex++;
+
+
+        if (
+            currentQuestionIndex >=
+            currentQuestions.length
+        ) {
+
+            finishQuiz();
+
+        } else {
+
+            nextQuestionBtn.textContent =
+                "NEXT ➡️";
 
             showQuestion();
 
         }
-    );
+
+    }
+);
 
 
+/* =========================================================
+   FINISH QUIZ
+========================================================= */
 
 function finishQuiz() {
 
-    questionPopup.classList.add(
-        "hidden"
+    closePopup(
+        "questionPopup"
     );
-
-
-    openDialogue(
-        "🎉 CHALLENGE COMPLETE",
-        "Excellent work! Keep exploring the campus and complete more B.Tech missions."
-    );
-
-}
-
-
-
-document
-    .getElementById(
-        "closeQuestionPopup"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            questionPopup.classList.add(
-                "hidden"
-            );
-
-        }
-    );
-
-
-
-/* =====================================================
-   DIALOGUE
-===================================================== */
-
-function openDialogue(
-    title,
-    text
-) {
-
-    document.getElementById(
-        "dialogueTitle"
-    ).textContent =
-        title;
-
-
-    document.getElementById(
-        "dialogueText"
-    ).textContent =
-        text;
-
-
-    dialoguePopup.classList.remove(
-        "hidden"
-    );
-
-}
-
-
-document
-    .getElementById(
-        "closeDialogue"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            dialoguePopup.classList.add(
-                "hidden"
-            );
-
-        }
-    );
-
-
-
-/* =====================================================
-   XP SYSTEM
-===================================================== */
-
-function addXP(
-    amount
-) {
-
-    gameState.xp += amount;
-
-
-    const requiredXP =
-        gameState.level *
-        500;
 
 
     if (
-        gameState.xp >=
-        requiredXP
+        currentSubject &&
+        !isSubjectCompleted(
+            currentSubject
+        )
     ) {
 
-        gameState.xp -=
-            requiredXP;
+        gameState.completedSubjects.push(
+            currentSubject
+        );
 
 
-        gameState.level++;
+        addXP(250);
+
+        addCoins(100);
 
 
-        gameState.coins += 100;
+        saveProgress();
 
 
-        openDialogue(
-            "🎉 LEVEL UP!",
-            "Congratulations! You reached Level " +
-            gameState.level +
-            ". You received 100 bonus coins."
+        showDialogue(
+            "Professor",
+            "👨‍🏫",
+            `Excellent work! You completed ${buildingData[currentSubject].title}. You earned a 250 XP completion bonus and 100 coins!`
+        );
+
+    } else {
+
+        showDialogue(
+            "Professor",
+            "👨‍🏫",
+            "Mission completed again! Keep practicing to improve your knowledge."
         );
 
     }
 
 
-    updateHUD();
+    updateBuildingCompletion();
 
 }
 
 
-
-function updateHUD() {
-
-    playerLevel.textContent =
-        "Level " +
-        gameState.level;
-
-
-    playerXP.textContent =
-        "XP: " +
-        gameState.xp;
-
-
-    playerCoins.textContent =
-        "Coins: " +
-        gameState.coins;
-
-}
-
-
-
-/* =====================================================
+/* =========================================================
    CODING ARENA
-===================================================== */
-
-const codingArena =
-    document.getElementById(
-        "codingArena"
-    );
-
-
-const codingTitle =
-    document.getElementById(
-        "codingTitle"
-    );
-
-
-const codingLanguage =
-    document.getElementById(
-        "codingLanguage"
-    );
-
-
-const codingDifficulty =
-    document.getElementById(
-        "codingDifficulty"
-    );
-
-
-const codingXP =
-    document.getElementById(
-        "codingXP"
-    );
-
-
-const codingDescription =
-    document.getElementById(
-        "codingDescription"
-    );
-
-
-const codeEditor =
-    document.getElementById(
-        "codeEditor"
-    );
-
-
-const codeOutput =
-    document.getElementById(
-        "codeOutput"
-    );
-
-
-const codeResult =
-    document.getElementById(
-        "codeResult"
-    );
-
-
-const nextCodingChallenge =
-    document.getElementById(
-        "nextCodingChallenge"
-    );
-
-
-
-/* =====================================================
-   OPEN CODING ARENA
-===================================================== */
+========================================================= */
 
 function openCodingArena() {
 
-    gameState.codingIndex =
-        0;
+    currentCodingIndex =
+        findNextCodingChallenge();
 
 
-    showCodingChallenge();
+    loadCodingChallenge();
 
 
-    codingArena.classList.remove(
-        "hidden"
+    openPopup(
+        "codingArenaPopup"
     );
 
 }
 
 
+/* =========================================================
+   FIND NEXT CODING
+========================================================= */
 
-/* =====================================================
-   SHOW CODING CHALLENGE
-===================================================== */
+function findNextCodingChallenge() {
 
-function showCodingChallenge() {
+    for (
+        let i = 0;
+        i < codingChallenges.length;
+        i++
+    ) {
 
-    const challenge =
-        codingChallenges[
-            gameState.codingIndex
-        ];
+        if (
+            !gameState.completedCoding.includes(
+                codingChallenges[i].id
+            )
+        ) {
 
+            return i;
 
-    if (!challenge) {
-
-        finishCodingArena();
-
-        return;
+        }
 
     }
 
 
-    codingTitle.textContent =
+    return 0;
+
+}
+
+
+/* =========================================================
+   LOAD CODING CHALLENGE
+========================================================= */
+
+function loadCodingChallenge() {
+
+    const challenge =
+        codingChallenges[
+            currentCodingIndex
+        ];
+
+
+    if (!challenge) {
+        return;
+    }
+
+
+    codingChallengeTitle.textContent =
         challenge.title;
 
 
@@ -1677,53 +1550,59 @@ function showCodingChallenge() {
         challenge.difficulty;
 
 
-    codingXP.textContent =
-        challenge.xp;
-
-
     codingDescription.textContent =
         challenge.description;
+
+
+    expectedOutput.textContent =
+        challenge.expectedOutput;
 
 
     codeEditor.value =
         challenge.starterCode;
 
 
-    codeOutput.textContent =
-        "Ready...";
-
-
     codeResult.textContent =
         "";
 
 
-    nextCodingChallenge.classList.add(
-        "hidden"
+    hintBox.classList.remove(
+        "show"
     );
+
+
+    hintIndex = 0;
+
+
+    hintText.textContent =
+        "";
+
+
+    nextCodingBtn.disabled =
+        false;
 
 }
 
 
-
-/* =====================================================
+/* =========================================================
    RUN CODE
-===================================================== */
+========================================================= */
 
-document
-    .getElementById(
-        "runCodeButton"
-    )
-    .addEventListener(
-        "click",
-        runCode
-    );
+runCodeBtn.addEventListener(
+    "click",
+    simulateCode
+);
 
 
-function runCode() {
+/* =========================================================
+   FRONTEND CODE SIMULATOR
+========================================================= */
+
+function simulateCode() {
 
     const challenge =
         codingChallenges[
-            gameState.codingIndex
+            currentCodingIndex
         ];
 
 
@@ -1733,615 +1612,946 @@ function runCode() {
 
     if (!code) {
 
-        codeOutput.textContent =
-            "No code entered.";
-
-
         codeResult.textContent =
-            "❌ Please write some code.";
-
-
-        codeResult.style.color =
-            "#ff7777";
-
+            "❌ Editor is empty.";
 
         return;
 
     }
 
 
-    /*
-       FRONTEND PRACTICE CHECKER
+    let passed = false;
 
-       GitHub Pages cannot safely compile
-       arbitrary C/C++/Java/Python code.
-
-       This version checks the learning
-       solution patterns.
-
-       Real compiler/execution will be
-       added through the backend later.
-    */
-
-
-    const output =
-        simulateCode(
-            challenge,
-            code
-        );
-
-
-    codeOutput.textContent =
-        output;
-
-
-    if (
-        normalizeOutput(
-            output
-        ) ===
-        normalizeOutput(
-            challenge.expectedOutput
-        )
-    ) {
-
-        codeResult.textContent =
-            "✅ CORRECT!  +" +
-            challenge.xp +
-            " XP  +" +
-            challenge.coins +
-            " Coins";
-
-
-        codeResult.style.color =
-            "#66ff99";
-
-
-        addXP(
-            challenge.xp
-        );
-
-
-        gameState.coins +=
-            challenge.coins;
-
-
-        updateHUD();
-
-
-        nextCodingChallenge.classList.remove(
-            "hidden"
-        );
-
-    } else {
-
-        codeResult.textContent =
-            "❌ Output does not match. Check your logic and try again.";
-
-
-        codeResult.style.color =
-            "#ff7777";
-
-    }
-
-}
-
-
-
-/* =====================================================
-   FRONTEND CODE SIMULATOR
-===================================================== */
-
-function simulateCode(
-    challenge,
-    code
-) {
 
     const lower =
         code.toLowerCase();
 
 
-    /* -----------------------------------------------
-       PYTHON HELLO
-    ------------------------------------------------ */
+    /* =============================================
+       CHALLENGE 1
+    ============================================= */
 
     if (
         challenge.id === 1
     ) {
 
-        if (
+        passed =
             lower.includes(
                 "print"
             ) &&
             lower.includes(
-                "hello b.tech"
-            )
-        ) {
-
-            return "Hello B.Tech";
-
-        }
+                "hello b.tech quest"
+            );
 
     }
 
 
-    /* -----------------------------------------------
-       PYTHON ADDITION
-    ------------------------------------------------ */
+    /* =============================================
+       CHALLENGE 2
+    ============================================= */
 
-    if (
+    else if (
         challenge.id === 2
     ) {
 
-        if (
-            (
-                lower.includes(
-                    "a+b"
-                )
-
-                ||
-
-                lower.includes(
-                    "a + b"
-                )
-            )
-
-            &&
-
+        passed =
             lower.includes(
                 "print"
-            )
-        ) {
-
-            return "30";
-
-        }
+            ) &&
+            (
+                lower.includes(
+                    "a + b"
+                ) ||
+                lower.includes(
+                    "10 + 20"
+                )
+            );
 
     }
 
 
-    /* -----------------------------------------------
-       EVEN ODD
-    ------------------------------------------------ */
+    /* =============================================
+       CHALLENGE 3
+    ============================================= */
 
-    if (
+    else if (
         challenge.id === 3
     ) {
 
-        if (
+        passed =
             lower.includes(
                 "%"
-            )
-
-            &&
-
+            ) &&
             lower.includes(
-                "2"
-            )
-
-            &&
-
-            (
-                lower.includes(
-                    "even"
-                )
-
-                ||
-
-                lower.includes(
-                    "odd"
-                )
-            )
-        ) {
-
-            return "Even";
-
-        }
+                "even"
+            );
 
     }
 
 
-    /* -----------------------------------------------
-       LARGEST
-    ------------------------------------------------ */
+    /* =============================================
+       CHALLENGE 4
+    ============================================= */
 
-    if (
+    else if (
         challenge.id === 4
     ) {
 
-        if (
-            lower.includes(
-                "max"
-            )
-
-            ||
-
+        passed =
             (
                 lower.includes(
-                    ">"
+                    "max"
+                ) &&
+                lower.includes(
+                    "25"
                 )
-
-                &&
-
-                (
-                    lower.includes(
-                        "a"
-                    )
-
-                    ||
-
-                    lower.includes(
-                        "b"
-                    )
-
-                    ||
-
-                    lower.includes(
-                        "c"
-                    )
-                )
-            )
-        ) {
-
-            return "25";
-
-        }
+            ) ||
+            lower.includes(
+                "25"
+            );
 
     }
 
 
-    /* -----------------------------------------------
-       REVERSE
-    ------------------------------------------------ */
+    /* =============================================
+       CHALLENGE 5
+    ============================================= */
 
-    if (
+    else if (
         challenge.id === 5
     ) {
 
-        if (
+        passed =
             lower.includes(
-                "[::-1]"
-            )
-
-            ||
-
-            lower.includes(
-                "reversed"
-            )
-        ) {
-
-            return "HCETB";
-
-        }
-
-    }
-
-
-    /* -----------------------------------------------
-       C HELLO
-    ------------------------------------------------ */
-
-    if (
-        challenge.id === 6
-    ) {
-
-        if (
-            lower.includes(
-                "printf"
-            )
-
-            &&
-
-            lower.includes(
-                "hello b.tech"
-            )
-        ) {
-
-            return "Hello B.Tech";
-
-        }
-
-    }
-
-
-    /* -----------------------------------------------
-       C ADD
-    ------------------------------------------------ */
-
-    if (
-        challenge.id === 7
-    ) {
-
-        if (
-            lower.includes(
-                "printf"
-            )
-
-            &&
-
-            (
-                lower.includes(
-                    "a+b"
-                )
-
-                ||
-
-                lower.includes(
-                    "a + b"
-                )
-            )
-        ) {
-
-            return "30";
-
-        }
-
-    }
-
-
-    /* -----------------------------------------------
-       C++
-    ------------------------------------------------ */
-
-    if (
-        challenge.id === 8
-    ) {
-
-        if (
-            lower.includes(
-                "cout"
-            )
-
-            &&
-
-            lower.includes(
-                "welcome coder"
-            )
-        ) {
-
-            return "Welcome Coder";
-
-        }
-
-    }
-
-
-    /* -----------------------------------------------
-       JAVA
-    ------------------------------------------------ */
-
-    if (
-        challenge.id === 9
-    ) {
-
-        if (
-            lower.includes(
-                "system.out.println"
-            )
-
-            &&
-
-            lower.includes(
-                "welcome java"
-            )
-        ) {
-
-            return "Welcome Java";
-
-        }
-
-    }
-
-
-    /* -----------------------------------------------
-       PALINDROME
-    ------------------------------------------------ */
-
-    if (
-        challenge.id === 10
-    ) {
-
-        if (
-            lower.includes(
-                "palindrome"
-            )
-
-            &&
-
+                "text"
+            ) &&
             (
                 lower.includes(
                     "[::-1]"
-                )
-
-                ||
-
+                ) ||
                 lower.includes(
-                    "reversed"
+                    "reverse"
                 )
-
-                ||
-
-                lower.includes(
-                    "word == word"
-                )
-            )
-        ) {
-
-            return "Palindrome";
-
-        }
+            );
 
     }
 
 
-    return (
-        "Program executed.\n\n" +
-        "Expected output:\n" +
-        challenge.expectedOutput
-    );
+    /* =============================================
+       CHALLENGE 6
+    ============================================= */
+
+    else if (
+        challenge.id === 6
+    ) {
+
+        passed =
+            lower.includes(
+                "#include"
+            ) &&
+            lower.includes(
+                "printf"
+            ) &&
+            lower.includes(
+                "hello c"
+            );
+
+    }
+
+
+    /* =============================================
+       CHALLENGE 7
+    ============================================= */
+
+    else if (
+        challenge.id === 7
+    ) {
+
+        passed =
+            lower.includes(
+                "printf"
+            ) &&
+            lower.includes(
+                "10"
+            ) &&
+            lower.includes(
+                "20"
+            );
+
+    }
+
+
+    /* =============================================
+       CHALLENGE 8
+    ============================================= */
+
+    else if (
+        challenge.id === 8
+    ) {
+
+        passed =
+            lower.includes(
+                "cout"
+            ) &&
+            lower.includes(
+                "welcome coder"
+            );
+
+    }
+
+
+    /* =============================================
+       CHALLENGE 9
+    ============================================= */
+
+    else if (
+        challenge.id === 9
+    ) {
+
+        passed =
+            lower.includes(
+                "system.out.println"
+            ) &&
+            lower.includes(
+                "welcome java"
+            );
+
+    }
+
+
+    /* =============================================
+       CHALLENGE 10
+    ============================================= */
+
+    else if (
+        challenge.id === 10
+    ) {
+
+        passed =
+            lower.includes(
+                "level"
+            ) &&
+            (
+                lower.includes(
+                    "[::-1]"
+                ) ||
+                lower.includes(
+                    "reverse"
+                )
+            ) &&
+            lower.includes(
+                "palindrome"
+            );
+
+    }
+
+
+    if (passed) {
+
+        completeCodingChallenge();
+
+    } else {
+
+        codeResult.textContent =
+            "❌ Test failed.\n\nCheck your logic and try again.";
+
+    }
 
 }
 
 
+/* =========================================================
+   COMPLETE CODING CHALLENGE
+========================================================= */
 
-/* =====================================================
-   NORMALIZE
-===================================================== */
-
-function normalizeOutput(
-    text
-) {
-
-    return String(text)
-
-        .trim()
-
-        .replace(
-            /\s+/g,
-            " "
-        )
-
-        .toLowerCase();
-
-}
-
-
-
-/* =====================================================
-   HINT
-===================================================== */
-
-document
-    .getElementById(
-        "hintButton"
-    )
-    .addEventListener(
-        "click",
-        showHint
-    );
-
-
-function showHint() {
+function completeCodingChallenge() {
 
     const challenge =
         codingChallenges[
-            gameState.codingIndex
+            currentCodingIndex
         ];
 
 
     if (
-        !challenge ||
-        !challenge.hints
-    )
+        gameState.completedCoding.includes(
+            challenge.id
+        )
+    ) {
+
+        codeResult.textContent =
+            "✅ Already completed.";
+
         return;
+
+    }
+
+
+    gameState.completedCoding.push(
+        challenge.id
+    );
+
+
+    addXP(
+        challenge.xp
+    );
+
+
+    addCoins(
+        challenge.coins
+    );
 
 
     codeResult.textContent =
-        "💡 HINT\n\n" +
-        challenge.hints.join(
-            "\n\n"
-        );
+        `✅ Challenge Passed!\n\n+${challenge.xp} XP\n+${challenge.coins} Coins`;
 
 
-    codeResult.style.color =
-        "#ffff88";
+    saveProgress();
 
 }
 
 
+/* =========================================================
+   HINT
+========================================================= */
 
-/* =====================================================
+hintBtn.addEventListener(
+    "click",
+    () => {
+
+        const challenge =
+            codingChallenges[
+                currentCodingIndex
+            ];
+
+
+        if (
+            !challenge ||
+            !challenge.hints
+        ) {
+            return;
+        }
+
+
+        if (
+            hintIndex >=
+            challenge.hints.length
+        ) {
+
+            hintIndex = 0;
+
+        }
+
+
+        hintText.textContent =
+            challenge.hints[
+                hintIndex
+            ];
+
+
+        hintBox.classList.add(
+            "show"
+        );
+
+
+        hintIndex++;
+
+    }
+);
+
+
+/* =========================================================
    RESET CODE
-===================================================== */
+========================================================= */
 
-document
-    .getElementById(
-        "resetCodeButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
+resetCodeBtn.addEventListener(
+    "click",
+    () => {
 
-            const challenge =
-                codingChallenges[
-                    gameState.codingIndex
-                ];
+        const challenge =
+            codingChallenges[
+                currentCodingIndex
+            ];
 
 
-            codeEditor.value =
-                challenge.starterCode;
-
-
-            codeOutput.textContent =
-                "Ready...";
-
-
-            codeResult.textContent =
-                "";
-
+        if (!challenge) {
+            return;
         }
-    );
 
 
+        codeEditor.value =
+            challenge.starterCode;
 
-/* =====================================================
+
+        codeResult.textContent =
+            "";
+
+
+        hintBox.classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+/* =========================================================
    NEXT CODING CHALLENGE
-===================================================== */
+========================================================= */
 
-nextCodingChallenge
-    .addEventListener(
-        "click",
-        () => {
+nextCodingBtn.addEventListener(
+    "click",
+    () => {
 
-            gameState.codingIndex++;
+        currentCodingIndex++;
 
-            showCodingChallenge();
+
+        if (
+            currentCodingIndex >=
+            codingChallenges.length
+        ) {
+
+            currentCodingIndex = 0;
 
         }
+
+
+        loadCodingChallenge();
+
+    }
+);
+
+
+/* =========================================================
+   FINISH CODING ARENA
+========================================================= */
+
+finishCodingBtn.addEventListener(
+    "click",
+    () => {
+
+        closePopup(
+            "codingArenaPopup"
+        );
+
+
+        addCoins(50);
+
+        saveProgress();
+
+
+        showDialogue(
+            "Programming Professor",
+            "👨‍🏫",
+            "Good job! Keep practicing your programming skills. Real online code execution and multiplayer coding battles will be added in a future backend version."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   XP SYSTEM
+========================================================= */
+
+function addXP(amount) {
+
+    gameState.xp += amount;
+
+
+    let leveledUp = false;
+
+
+    while (
+        gameState.xp >=
+        getXPRequired()
+    ) {
+
+        gameState.xp -=
+            getXPRequired();
+
+        gameState.level++;
+
+        leveledUp = true;
+
+    }
+
+
+    updateHUD();
+
+    saveProgress();
+
+
+    if (leveledUp) {
+
+        showDialogue(
+            "Professor",
+            "👨‍🏫",
+            `🎉 LEVEL UP! You are now Level ${gameState.level}!`
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   XP REQUIRED
+========================================================= */
+
+function getXPRequired() {
+
+    return (
+        100 +
+        (
+            gameState.level - 1
+        ) * 50
     );
 
+}
 
 
-/* =====================================================
-   CLOSE CODING ARENA
-===================================================== */
+/* =========================================================
+   COINS
+========================================================= */
+
+function addCoins(amount) {
+
+    gameState.coins += amount;
+
+    updateHUD();
+
+    saveProgress();
+
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD() {
+
+    levelText.textContent =
+        gameState.level;
+
+
+    xpText.textContent =
+        `${gameState.xp} / ${getXPRequired()}`;
+
+
+    coinsText.textContent =
+        gameState.coins;
+
+
+    completedText.textContent =
+        `${gameState.completedSubjects.length} / 10`;
+
+}
+
+
+/* =========================================================
+   BUILDING COMPLETION
+========================================================= */
+
+function updateBuildingCompletion() {
+
+    document
+        .querySelectorAll(
+            ".building[data-subject]"
+        )
+        .forEach(
+            building => {
+
+                const subject =
+                    building.dataset.subject;
+
+
+                building.classList.toggle(
+                    "completed",
+                    isSubjectCompleted(
+                        subject
+                    )
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   COMPLETED CHECK
+========================================================= */
+
+function isSubjectCompleted(
+    subject
+) {
+
+    return gameState
+        .completedSubjects
+        .includes(subject);
+
+}
+
+
+/* =========================================================
+   DIALOGUE
+========================================================= */
+
+function showDialogue(
+    name,
+    icon,
+    message
+) {
+
+    dialogueName.textContent =
+        `${icon} ${name}`;
+
+
+    dialogueText.textContent =
+        message;
+
+
+    openPopup(
+        "dialoguePopup"
+    );
+
+}
+
+
+dialogueOkBtn.addEventListener(
+    "click",
+    () => {
+
+        closePopup(
+            "dialoguePopup"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   POPUP SYSTEM
+========================================================= */
+
+function openPopup(id) {
+
+    const popup =
+        document.getElementById(id);
+
+
+    if (popup) {
+
+        popup.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+function closePopup(id) {
+
+    const popup =
+        document.getElementById(id);
+
+
+    if (popup) {
+
+        popup.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+function isAnyPopupOpen() {
+
+    return document
+        .querySelector(
+            ".popup.active"
+        ) !== null;
+
+}
+
+
+/* =========================================================
+   CLOSE BUTTONS
+========================================================= */
 
 document
-    .getElementById(
-        "closeCodingArena"
+    .querySelectorAll(
+        ".close-popup"
     )
-    .addEventListener(
-        "click",
-        () => {
+    .forEach(
+        button => {
 
-            codingArena.classList.add(
-                "hidden"
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const id =
+                        button.dataset.close;
+
+
+                    closePopup(id);
+
+                }
             );
 
         }
     );
 
 
+/* =========================================================
+   LIBRARY
+========================================================= */
 
-/* =====================================================
-   FINISH CODING ARENA
-===================================================== */
+function showLibraryInfo() {
 
-function finishCodingArena() {
-
-    codingArena.classList.add(
-        "hidden"
+    closePopup(
+        "subjectPopup"
     );
 
 
-    gameState.coins += 200;
+    infoTitle.textContent =
+        "📚 Digital Library";
 
 
-    updateHUD();
+    infoContent.innerHTML = `
+
+        <div class="info-section">
+
+            <h3>🎓 B.Tech Learning Library</h3>
+
+            <p>
+                The Digital Library will contain
+                organized learning resources.
+            </p>
+
+        </div>
+
+        <div class="info-section">
+
+            <strong>💻 Programming</strong>
+
+            <p>
+                Python, C, C++, Java,
+                programming fundamentals.
+            </p>
+
+        </div>
+
+        <div class="info-section">
+
+            <strong>🧠 DSA</strong>
+
+            <p>
+                Arrays, Strings, Linked Lists,
+                Trees, Graphs and Algorithms.
+            </p>
+
+        </div>
+
+        <div class="info-section">
+
+            <strong>🗄️ DBMS</strong>
+
+            <p>
+                SQL, Keys, Normalization,
+                Transactions and Database Design.
+            </p>
+
+        </div>
+
+        <div class="info-section">
+
+            <strong>🌐 Networks</strong>
+
+            <p>
+                OSI, TCP/IP, HTTP, IP addressing
+                and networking devices.
+            </p>
+
+        </div>
+
+        <div class="info-section">
+
+            <strong>🤖 AI / ML</strong>
+
+            <p>
+                Artificial Intelligence,
+                Machine Learning and models.
+            </p>
+
+        </div>
+
+        <div class="info-section">
+
+            <strong>🚀 Future Library Features</strong>
+
+            <p>
+                PDF notes, video lessons,
+                previous-year questions,
+                interview material and cheat sheets.
+            </p>
+
+        </div>
+
+    `;
 
 
-    openDialogue(
-        "🏆 CODING ARENA COMPLETE!",
-        "Amazing! You completed all programming challenges and earned 200 bonus coins."
+    openPopup(
+        "infoPopup"
     );
 
 }
+
+
+/* =========================================================
+   SAVE PROGRESS
+========================================================= */
+
+function saveProgress() {
+
+    try {
+
+        localStorage.setItem(
+            "btechQuestSave",
+            JSON.stringify(gameState)
+        );
+
+    } catch (error) {
+
+        console.log(
+            "Save unavailable:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD PROGRESS
+========================================================= */
+
+function loadProgress() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "btechQuestSave"
+            );
+
+
+        if (!saved) {
+
+            return structuredClone(
+                defaultGameState
+            );
+
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        return {
+
+            ...structuredClone(
+                defaultGameState
+            ),
+
+            ...parsed,
+
+            player: {
+
+                ...defaultGameState.player,
+
+                ...(parsed.player || {})
+
+            },
+
+            completedSubjects:
+                Array.isArray(
+                    parsed.completedSubjects
+                )
+                    ? parsed.completedSubjects
+                    : [],
+
+            completedCoding:
+                Array.isArray(
+                    parsed.completedCoding
+                )
+                    ? parsed.completedCoding
+                    : []
+
+        };
+
+    } catch (error) {
+
+        console.log(
+            "Could not load save:",
+            error
+        );
+
+
+        return structuredClone(
+            defaultGameState
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD PLAYER POSITION
+========================================================= */
+
+function loadPlayerPosition() {
+
+    renderPlayer();
+
+    updateBuildingCompletion();
+
+}
+
+
+/* =========================================================
+   RESET SAVE
+========================================================= */
+
+window.resetBTechQuest = function () {
+
+    localStorage.removeItem(
+        "btechQuestSave"
+    );
+
+
+    location.reload();
+
+};
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+updateHUD();
+
+renderPlayer();
+
+updateBuildingCompletion();
+
+console.log(
+    "🎓 BTECH QUEST STEP 4 LOADED"
+);
